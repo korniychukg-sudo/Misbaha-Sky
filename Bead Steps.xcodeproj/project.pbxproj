@@ -1,0 +1,417 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BD0000000000000000000101 /* BeadStepsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000001 /* BeadStepsApp.swift */; };
+		BD0000000000000000000102 /* BSTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000002 /* BSTheme.swift */; };
+		BD0000000000000000000103 /* BSModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000003 /* BSModels.swift */; };
+		BD0000000000000000000104 /* AdhkarData1.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000004 /* AdhkarData1.swift */; };
+		BD0000000000000000000105 /* AdhkarData2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000005 /* AdhkarData2.swift */; };
+		BD0000000000000000000106 /* AdhkarData3.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000006 /* AdhkarData3.swift */; };
+		BD0000000000000000000107 /* NamesData1.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000007 /* NamesData1.swift */; };
+		BD0000000000000000000108 /* NamesData2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000008 /* NamesData2.swift */; };
+		BD0000000000000000000109 /* NamesData3.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000009 /* NamesData3.swift */; };
+		BD0000000000000000000110 /* LoreData1.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000010 /* LoreData1.swift */; };
+		BD0000000000000000000111 /* LoreData2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000011 /* LoreData2.swift */; };
+		BD0000000000000000000112 /* QuizEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000012 /* QuizEngine.swift */; };
+		BD0000000000000000000113 /* BSStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000013 /* BSStore.swift */; };
+		BD0000000000000000000114 /* BSHaptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000014 /* BSHaptics.swift */; };
+		BD0000000000000000000115 /* BSIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000015 /* BSIcons.swift */; };
+		BD0000000000000000000116 /* BSArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000016 /* BSArt.swift */; };
+		BD0000000000000000000117 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000017 /* Components.swift */; };
+		BD0000000000000000000118 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000018 /* RootView.swift */; };
+		BD0000000000000000000119 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000019 /* OnboardingView.swift */; };
+		BD0000000000000000000120 /* BeadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000020 /* BeadsView.swift */; };
+		BD0000000000000000000121 /* MisbahaCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000021 /* MisbahaCanvas.swift */; };
+		BD0000000000000000000122 /* AdhkarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000022 /* AdhkarView.swift */; };
+		BD0000000000000000000123 /* AdhkarDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000023 /* AdhkarDetailView.swift */; };
+		BD0000000000000000000124 /* NamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000024 /* NamesView.swift */; };
+		BD0000000000000000000125 /* LearnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000025 /* LearnView.swift */; };
+		BD0000000000000000000126 /* QuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000026 /* QuizView.swift */; };
+		BD0000000000000000000127 /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000027 /* JournalView.swift */; };
+		BD0000000000000000000128 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000028 /* SettingsView.swift */; };
+		BD0000000000000000000140 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000040 /* Assets.xcassets */; };
+		BD0000000000000000000141 /* Art in Resources */ = {isa = PBXBuildFile; fileRef = BD0000000000000000000041 /* Art */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		BD0000000000000000000001 /* BeadStepsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeadStepsApp.swift; sourceTree = "<group>"; };
+		BD0000000000000000000002 /* BSTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTheme.swift; sourceTree = "<group>"; };
+		BD0000000000000000000003 /* BSModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSModels.swift; sourceTree = "<group>"; };
+		BD0000000000000000000004 /* AdhkarData1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdhkarData1.swift; sourceTree = "<group>"; };
+		BD0000000000000000000005 /* AdhkarData2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdhkarData2.swift; sourceTree = "<group>"; };
+		BD0000000000000000000006 /* AdhkarData3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdhkarData3.swift; sourceTree = "<group>"; };
+		BD0000000000000000000007 /* NamesData1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamesData1.swift; sourceTree = "<group>"; };
+		BD0000000000000000000008 /* NamesData2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamesData2.swift; sourceTree = "<group>"; };
+		BD0000000000000000000009 /* NamesData3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamesData3.swift; sourceTree = "<group>"; };
+		BD0000000000000000000010 /* LoreData1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoreData1.swift; sourceTree = "<group>"; };
+		BD0000000000000000000011 /* LoreData2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoreData2.swift; sourceTree = "<group>"; };
+		BD0000000000000000000012 /* QuizEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizEngine.swift; sourceTree = "<group>"; };
+		BD0000000000000000000013 /* BSStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSStore.swift; sourceTree = "<group>"; };
+		BD0000000000000000000014 /* BSHaptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSHaptics.swift; sourceTree = "<group>"; };
+		BD0000000000000000000015 /* BSIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSIcons.swift; sourceTree = "<group>"; };
+		BD0000000000000000000016 /* BSArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSArt.swift; sourceTree = "<group>"; };
+		BD0000000000000000000017 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		BD0000000000000000000018 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		BD0000000000000000000019 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		BD0000000000000000000020 /* BeadsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeadsView.swift; sourceTree = "<group>"; };
+		BD0000000000000000000021 /* MisbahaCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MisbahaCanvas.swift; sourceTree = "<group>"; };
+		BD0000000000000000000022 /* AdhkarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdhkarView.swift; sourceTree = "<group>"; };
+		BD0000000000000000000023 /* AdhkarDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdhkarDetailView.swift; sourceTree = "<group>"; };
+		BD0000000000000000000024 /* NamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamesView.swift; sourceTree = "<group>"; };
+		BD0000000000000000000025 /* LearnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnView.swift; sourceTree = "<group>"; };
+		BD0000000000000000000026 /* QuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizView.swift; sourceTree = "<group>"; };
+		BD0000000000000000000027 /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
+		BD0000000000000000000028 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		BD0000000000000000000040 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BD0000000000000000000041 /* Art */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Art; sourceTree = "<group>"; };
+		BD0000000000000000000043 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD0000000000000000000050 /* Bead Steps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bead Steps.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BD0000000000000000000201 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BD0000000000000000000301 = {
+			isa = PBXGroup;
+			children = (
+				BD0000000000000000000302 /* Bead Steps */,
+				BD0000000000000000000303 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BD0000000000000000000302 /* Bead Steps */ = {
+			isa = PBXGroup;
+			children = (
+				BD0000000000000000000001 /* BeadStepsApp.swift */,
+				BD0000000000000000000002 /* BSTheme.swift */,
+				BD0000000000000000000003 /* BSModels.swift */,
+				BD0000000000000000000004 /* AdhkarData1.swift */,
+				BD0000000000000000000005 /* AdhkarData2.swift */,
+				BD0000000000000000000006 /* AdhkarData3.swift */,
+				BD0000000000000000000007 /* NamesData1.swift */,
+				BD0000000000000000000008 /* NamesData2.swift */,
+				BD0000000000000000000009 /* NamesData3.swift */,
+				BD0000000000000000000010 /* LoreData1.swift */,
+				BD0000000000000000000011 /* LoreData2.swift */,
+				BD0000000000000000000012 /* QuizEngine.swift */,
+				BD0000000000000000000013 /* BSStore.swift */,
+				BD0000000000000000000014 /* BSHaptics.swift */,
+				BD0000000000000000000015 /* BSIcons.swift */,
+				BD0000000000000000000016 /* BSArt.swift */,
+				BD0000000000000000000017 /* Components.swift */,
+				BD0000000000000000000018 /* RootView.swift */,
+				BD0000000000000000000019 /* OnboardingView.swift */,
+				BD0000000000000000000020 /* BeadsView.swift */,
+				BD0000000000000000000021 /* MisbahaCanvas.swift */,
+				BD0000000000000000000022 /* AdhkarView.swift */,
+				BD0000000000000000000023 /* AdhkarDetailView.swift */,
+				BD0000000000000000000024 /* NamesView.swift */,
+				BD0000000000000000000025 /* LearnView.swift */,
+				BD0000000000000000000026 /* QuizView.swift */,
+				BD0000000000000000000027 /* JournalView.swift */,
+				BD0000000000000000000028 /* SettingsView.swift */,
+				BD0000000000000000000040 /* Assets.xcassets */,
+				BD0000000000000000000041 /* Art */,
+				BD0000000000000000000043 /* Info.plist */,
+			);
+			path = "Bead Steps";
+			sourceTree = "<group>";
+		};
+		BD0000000000000000000303 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BD0000000000000000000050 /* Bead Steps.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BD0000000000000000000401 /* Bead Steps */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BD0000000000000000000501 /* Build configuration list for PBXNativeTarget "Bead Steps" */;
+			buildPhases = (
+				BD0000000000000000000601 /* Sources */,
+				BD0000000000000000000201 /* Frameworks */,
+				BD0000000000000000000602 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Bead Steps";
+			productName = "Bead Steps";
+			productReference = BD0000000000000000000050 /* Bead Steps.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BD0000000000000000000701 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					BD0000000000000000000401 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = BD0000000000000000000502 /* Build configuration list for PBXProject "Bead Steps" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BD0000000000000000000301;
+			productRefGroup = BD0000000000000000000303 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BD0000000000000000000401 /* Bead Steps */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BD0000000000000000000602 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD0000000000000000000140 /* Assets.xcassets in Resources */,
+				BD0000000000000000000141 /* Art in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BD0000000000000000000601 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD0000000000000000000101 /* BeadStepsApp.swift in Sources */,
+				BD0000000000000000000102 /* BSTheme.swift in Sources */,
+				BD0000000000000000000103 /* BSModels.swift in Sources */,
+				BD0000000000000000000104 /* AdhkarData1.swift in Sources */,
+				BD0000000000000000000105 /* AdhkarData2.swift in Sources */,
+				BD0000000000000000000106 /* AdhkarData3.swift in Sources */,
+				BD0000000000000000000107 /* NamesData1.swift in Sources */,
+				BD0000000000000000000108 /* NamesData2.swift in Sources */,
+				BD0000000000000000000109 /* NamesData3.swift in Sources */,
+				BD0000000000000000000110 /* LoreData1.swift in Sources */,
+				BD0000000000000000000111 /* LoreData2.swift in Sources */,
+				BD0000000000000000000112 /* QuizEngine.swift in Sources */,
+				BD0000000000000000000113 /* BSStore.swift in Sources */,
+				BD0000000000000000000114 /* BSHaptics.swift in Sources */,
+				BD0000000000000000000115 /* BSIcons.swift in Sources */,
+				BD0000000000000000000116 /* BSArt.swift in Sources */,
+				BD0000000000000000000117 /* Components.swift in Sources */,
+				BD0000000000000000000118 /* RootView.swift in Sources */,
+				BD0000000000000000000119 /* OnboardingView.swift in Sources */,
+				BD0000000000000000000120 /* BeadsView.swift in Sources */,
+				BD0000000000000000000121 /* MisbahaCanvas.swift in Sources */,
+				BD0000000000000000000122 /* AdhkarView.swift in Sources */,
+				BD0000000000000000000123 /* AdhkarDetailView.swift in Sources */,
+				BD0000000000000000000124 /* NamesView.swift in Sources */,
+				BD0000000000000000000125 /* LearnView.swift in Sources */,
+				BD0000000000000000000126 /* QuizView.swift in Sources */,
+				BD0000000000000000000127 /* JournalView.swift in Sources */,
+				BD0000000000000000000128 /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		BD0000000000000000000801 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BD0000000000000000000802 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		BD0000000000000000000803 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Bead Steps/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.beadsteps.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BD0000000000000000000804 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Bead Steps/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.beadsteps.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BD0000000000000000000501 /* Build configuration list for PBXNativeTarget "Bead Steps" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BD0000000000000000000803 /* Debug */,
+				BD0000000000000000000804 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BD0000000000000000000502 /* Build configuration list for PBXProject "Bead Steps" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BD0000000000000000000801 /* Debug */,
+				BD0000000000000000000802 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BD0000000000000000000701 /* Project object */;
+}
