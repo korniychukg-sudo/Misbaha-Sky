@@ -4,6 +4,7 @@ struct NamesView: View {
     @EnvironmentObject var store: BSStore
     @State private var selected: DivineName? = nil
     @State private var filter: Int = 0
+    @State private var showDrill = false
 
     private let columns = [GridItem(.adaptive(minimum: 108), spacing: 10)]
 
@@ -11,6 +12,7 @@ struct NamesView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 dailyCard
+                studyCard
                 HStack {
                     picker
                     Spacer()
@@ -43,6 +45,38 @@ struct NamesView: View {
             NameDetailSheet(name: name)
                 .environmentObject(store)
         }
+        .sheet(isPresented: $showDrill) {
+            NameDrillView()
+                .environmentObject(store)
+        }
+    }
+
+    private var studyCard: some View {
+        Button {
+            showDrill = true
+            BSHaptics.tap()
+        } label: {
+            HStack(spacing: 12) {
+                ZStack {
+                    Circle().fill(BSTheme.goldSoft.opacity(0.5)).frame(width: 44, height: 44)
+                    StarShape(points: 8)
+                        .fill(BSTheme.gold)
+                        .frame(width: 20, height: 20)
+                }
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Study ten")
+                        .font(BSTheme.serif(16))
+                        .foregroundColor(BSTheme.ink)
+                    Text("A short flashcard sitting — unread names first")
+                        .font(BSTheme.text(12))
+                        .foregroundColor(BSTheme.inkSoft)
+                }
+                Spacer()
+                ChevronIcon()
+            }
+            .bsCard(padding: 12)
+        }
+        .buttonStyle(ScalePressStyle())
     }
 
     private var filteredNames: [DivineName] {
@@ -233,5 +267,195 @@ struct NameDetailSheet: View {
             }
         }
         .background(BSTheme.paper.ignoresSafeArea())
+    }
+}
+
+struct NameDrillView: View {
+    @EnvironmentObject var store: BSStore
+    @Environment(\.presentationMode) var presentation
+    @State private var deck: [DivineName] = []
+    @State private var index = 0
+    @State private var revealed = false
+    @State private var knew = 0
+    @State private var again = 0
+    @State private var newlyRead: [Int] = []
+    @State private var finished = false
+
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack {
+                if !finished && !deck.isEmpty {
+                    BSChip(text: "Card \(min(index + 1, deck.count)) of \(deck.count)", tint: BSTheme.emerald)
+                }
+                Spacer()
+                Button {
+                    presentation.wrappedValue.dismiss()
+                } label: {
+                    Text("Close")
+                        .font(BSTheme.text(14, .semibold))
+                        .foregroundColor(BSTheme.emerald)
+                }
+            }
+            .padding(.horizontal, 18)
+            .padding(.top, 16)
+            Spacer()
+            if finished {
+                resultView
+            } else if index < deck.count {
+                cardView(deck[index])
+            }
+            Spacer()
+        }
+        .background(BSTheme.paper.ignoresSafeArea())
+        .onAppear { buildDeck() }
+    }
+
+    private func buildDeck() {
+        guard deck.isEmpty else { return }
+        let unread = BSCatalog.names.filter { !store.state.namesRead.contains($0.id) }.shuffled()
+        let read = BSCatalog.names.filter { store.state.namesRead.contains($0.id) }.shuffled()
+        deck = Array((unread + read).prefix(10))
+    }
+
+    private func cardView(_ name: DivineName) -> some View {
+        VStack(spacing: 22) {
+            ZStack {
+                GeometricRosette(tint: BSTheme.gold.opacity(0.6), petals: 12)
+                    .frame(width: 190, height: 190)
+                VStack(spacing: 6) {
+                    Text(name.arabic)
+                        .font(BSTheme.arabic(40, .semibold))
+                        .foregroundColor(BSTheme.ink)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.4)
+                        .frame(maxWidth: 170)
+                    Text(name.translit)
+                        .font(BSTheme.serif(19))
+                        .foregroundColor(BSTheme.emerald)
+                }
+            }
+            if revealed {
+                VStack(spacing: 8) {
+                    Text(name.meaning)
+                        .font(BSTheme.text(17, .semibold))
+                        .foregroundColor(BSTheme.ink)
+                    Text(name.reflection)
+                        .font(BSTheme.text(13))
+                        .foregroundColor(BSTheme.inkSoft)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 36)
+                }
+                HStack(spacing: 12) {
+                    Button {
+                        answer(knewIt: false)
+                    } label: {
+                        Text("Again")
+                            .font(BSTheme.text(15, .semibold))
+                            .foregroundColor(BSTheme.terra)
+                            .frame(width: 130)
+                            .padding(.vertical, 12)
+                            .background(Capsule().fill(BSTheme.terraSoft.opacity(0.6)))
+                    }
+                    .buttonStyle(ScalePressStyle())
+                    Button {
+                        answer(knewIt: true)
+                    } label: {
+                        Text("Knew it")
+                            .font(BSTheme.text(15, .semibold))
+                            .foregroundColor(.white)
+                            .frame(width: 130)
+                            .padding(.vertical, 12)
+                            .background(Capsule().fill(BSTheme.emerald))
+                    }
+                    .buttonStyle(ScalePressStyle())
+                }
+                .padding(.top, 6)
+            } else {
+                Text("What does this name mean?")
+                    .font(BSTheme.text(14))
+                    .foregroundColor(BSTheme.inkFaint)
+                Button {
+                    withAnimation(.easeOut(duration: 0.2)) { revealed = true }
+                    BSHaptics.tap()
+                } label: {
+                    Text("Reveal")
+                        .font(BSTheme.text(15, .semibold))
+                        .foregroundColor(.white)
+                        .frame(width: 180)
+                        .padding(.vertical, 12)
+                        .background(Capsule().fill(BSTheme.gold))
+                }
+                .buttonStyle(ScalePressStyle())
+            }
+        }
+        .padding(.horizontal, 20)
+    }
+
+    private func answer(knewIt: Bool) {
+        let name = deck[index]
+        if knewIt {
+            knew += 1
+            if !store.state.namesRead.contains(name.id) {
+                newlyRead.append(name.id)
+                store.markNameRead(name.id)
+            }
+            BSHaptics.success()
+        } else {
+            again += 1
+            if deck.count < 26 {
+                deck.append(name)
+            }
+            BSHaptics.settle()
+        }
+        revealed = false
+        index += 1
+        if index >= deck.count {
+            finished = true
+        }
+    }
+
+    private var resultView: some View {
+        VStack(spacing: 14) {
+            ZStack {
+                ProgressRing(progress: Double(knew) / Double(max(1, knew + again)), lineWidth: 7, tint: BSTheme.gold)
+                    .frame(width: 104, height: 104)
+                VStack(spacing: 0) {
+                    Text("\(knew)")
+                        .font(BSTheme.round(32))
+                        .foregroundColor(BSTheme.ink)
+                    Text("known")
+                        .font(BSTheme.text(11))
+                        .foregroundColor(BSTheme.inkFaint)
+                }
+            }
+            Text("Sitting complete")
+                .font(BSTheme.serif(23))
+                .foregroundColor(BSTheme.ink)
+            Text(newlyRead.isEmpty
+                 ? "Every card in this sitting was already familiar."
+                 : "\(newlyRead.count) name\(newlyRead.count == 1 ? "" : "s") newly marked as read.")
+                .font(BSTheme.text(13))
+                .foregroundColor(BSTheme.inkSoft)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 30)
+            Button {
+                deck = []
+                index = 0
+                knew = 0
+                again = 0
+                newlyRead = []
+                finished = false
+                revealed = false
+                buildDeck()
+            } label: {
+                Text("Another ten")
+                    .font(BSTheme.text(15, .semibold))
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 34)
+                    .padding(.vertical, 12)
+                    .background(Capsule().fill(BSTheme.emerald))
+            }
+            .buttonStyle(ScalePressStyle())
+        }
     }
 }

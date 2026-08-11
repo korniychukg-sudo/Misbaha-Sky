@@ -7,7 +7,9 @@ struct JournalView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 summaryRow
+                wirdRingCard
                 heatmapCard
+                rhythmCard
                 favouritesCard
                 badgesCard
                 sessionsCard
@@ -72,6 +74,82 @@ struct JournalView: View {
                         .strokeBorder(BSTheme.line, lineWidth: 1)
                 )
         )
+    }
+
+    private var wirdRingCard: some View {
+        let steps = AdhkarView.wirdSteps
+        let today = BSStore.dayKey()
+        let done = steps.filter { step in
+            if step.prayerIndex > 0 {
+                return (store.state.prayerByDay[today] ?? 0) >= step.prayerIndex
+            }
+            return (store.state.setDayLog[step.setId] ?? []).contains(today)
+        }.count
+        return HStack(spacing: 14) {
+            ZStack {
+                ProgressRing(progress: Double(done) / Double(steps.count), lineWidth: 6, tint: BSTheme.gold)
+                    .frame(width: 54, height: 54)
+                Text("\(done)")
+                    .font(BSTheme.round(18))
+                    .foregroundColor(BSTheme.ink)
+            }
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Today's wird")
+                    .font(BSTheme.serif(16))
+                    .foregroundColor(BSTheme.ink)
+                Text(done == steps.count
+                     ? "All nine stations counted — a full day."
+                     : "\(done) of \(steps.count) stations of the day counted so far.")
+                    .font(BSTheme.text(12))
+                    .foregroundColor(BSTheme.inkSoft)
+            }
+            Spacer()
+            Button {
+                store.activeTab = 1
+            } label: {
+                ChevronIcon()
+                    .padding(6)
+            }
+        }
+        .bsCard(padding: 14)
+    }
+
+    private var rhythmCard: some View {
+        var buckets = Array(repeating: 0, count: 8)
+        let cal = Calendar.current
+        for rec in store.state.sessions {
+            let h = cal.component(.hour, from: rec.date)
+            buckets[min(7, h / 3)] += rec.count
+        }
+        let maxVal = max(1, buckets.max() ?? 1)
+        let labels = ["0", "3", "6", "9", "12", "15", "18", "21"]
+        return Group {
+            if buckets.contains(where: { $0 > 0 }) {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Rhythm of the day")
+                        .font(BSTheme.serif(16))
+                        .foregroundColor(BSTheme.ink)
+                    Text("When your hands reach for the beads")
+                        .font(BSTheme.text(11))
+                        .foregroundColor(BSTheme.inkFaint)
+                    HStack(alignment: .bottom, spacing: 7) {
+                        ForEach(0..<8, id: \.self) { i in
+                            VStack(spacing: 3) {
+                                RoundedRectangle(cornerRadius: 3)
+                                    .fill(buckets[i] == maxVal ? BSTheme.gold : BSTheme.emerald.opacity(buckets[i] > 0 ? 0.7 : 0.12))
+                                    .frame(height: max(5, CGFloat(buckets[i]) / CGFloat(maxVal) * 64))
+                                Text(labels[i])
+                                    .font(BSTheme.text(9))
+                                    .foregroundColor(BSTheme.inkFaint)
+                            }
+                            .frame(maxWidth: .infinity)
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .bsCard()
+            }
+        }
     }
 
     private var heatmapCard: some View {

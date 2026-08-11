@@ -54,6 +54,7 @@ struct MisbahaStrand: View {
             TimelineView(.animation) { timeline in
                 Canvas { ctx, size in
                     engine.step(now: timeline.date.timeIntervalSinceReferenceDate)
+                    drawSky(ctx: ctx, size: size, time: timeline.date.timeIntervalSinceReferenceDate, date: timeline.date)
                     drawStrand(ctx: ctx, size: size, time: timeline.date.timeIntervalSinceReferenceDate)
                 }
             }
@@ -120,14 +121,123 @@ struct MisbahaStrand: View {
         min(max(44, size.width * 0.15), 62)
     }
 
+    private func skyPhase(_ date: Date) -> Double {
+        let cal = Calendar.current
+        let h = Double(cal.component(.hour, from: date))
+        let m = Double(cal.component(.minute, from: date))
+        return h + m / 60.0
+    }
+
+    private func drawSky(ctx: GraphicsContext, size: CGSize, time: TimeInterval, date: Date) {
+        let hour = skyPhase(date)
+        let top: Color
+        let bottom: Color
+        let night = hour < 5.0 || hour >= 20.5
+        let dawn = hour >= 5.0 && hour < 7.5
+        let dusk = hour >= 17.0 && hour < 20.5
+        if night {
+            top = Color(bsHex: 0x232B3F).opacity(0.32)
+            bottom = Color(bsHex: 0x3A3A52).opacity(0.14)
+        } else if dawn {
+            top = Color(bsHex: 0xC9D3E0).opacity(0.30)
+            bottom = Color(bsHex: 0xEFC98A).opacity(0.26)
+        } else if dusk {
+            top = Color(bsHex: 0x8A7A9E).opacity(0.24)
+            bottom = Color(bsHex: 0xE0A264).opacity(0.26)
+        } else {
+            top = Color(bsHex: 0xBFD2D8).opacity(0.22)
+            bottom = Color(bsHex: 0xF2E4BC).opacity(0.18)
+        }
+        let rect = CGRect(origin: .zero, size: size)
+        ctx.fill(
+            Path(rect),
+            with: .linearGradient(
+                Gradient(colors: [top, bottom]),
+                startPoint: .zero,
+                endPoint: CGPoint(x: 0, y: size.height)
+            )
+        )
+
+        if night {
+            for i in 0..<26 {
+                let seed = Double((i * 2654435761) % 1000) / 1000.0
+                let seed2 = Double((i * 40503 + 77) % 1000) / 1000.0
+                let x = seed * size.width
+                let y = seed2 * size.height * 0.55
+                let tw = 0.35 + 0.3 * sin(time * (0.8 + seed) + seed2 * 6.28)
+                let s: CGFloat = 1.1 + CGFloat(seed2) * 1.4
+                ctx.fill(
+                    Path(ellipseIn: CGRect(x: x, y: y, width: s, height: s)),
+                    with: .color(BSTheme.goldSoft.opacity(tw))
+                )
+            }
+            let mc = CGPoint(x: size.width * 0.78, y: size.height * 0.14)
+            let mr: CGFloat = 17
+            var moon = Path()
+            moon.addArc(center: mc, radius: mr, startAngle: .degrees(-50), endAngle: .degrees(130), clockwise: false)
+            moon.addQuadCurve(
+                to: CGPoint(x: mc.x + cos(-50 * .pi / 180) * mr, y: mc.y + sin(-50 * .pi / 180) * mr),
+                control: CGPoint(x: mc.x + 7, y: mc.y + 4)
+            )
+            ctx.fill(moon, with: .color(BSTheme.goldSoft.opacity(0.55)))
+        } else {
+            let t = (hour - 6.0) / 14.0
+            let a = CGFloat(.pi * (1.0 - min(1, max(0, t))))
+            let sc = CGPoint(
+                x: size.width * 0.5 + cos(a) * size.width * 0.4,
+                y: size.height * 0.30 - sin(a) * size.height * 0.16
+            )
+            ctx.fill(
+                Path(ellipseIn: CGRect(x: sc.x - 15, y: sc.y - 15, width: 30, height: 30)),
+                with: .color(BSTheme.goldSoft.opacity(dawn || dusk ? 0.5 : 0.34))
+            )
+            ctx.stroke(
+                Path(ellipseIn: CGRect(x: sc.x - 21, y: sc.y - 21, width: 42, height: 42)),
+                with: .color(BSTheme.gold.opacity(0.18)),
+                lineWidth: 1.4
+            )
+        }
+
+        let baseY = size.height * 0.94
+        var sil = Path()
+        sil.move(to: CGPoint(x: 0, y: size.height))
+        sil.addLine(to: CGPoint(x: 0, y: baseY))
+        var x: CGFloat = 0
+        var i = 0
+        while x < size.width {
+            let w = size.width * 0.16
+            if i % 3 == 1 {
+                sil.addLine(to: CGPoint(x: x + w * 0.2, y: baseY))
+                sil.addQuadCurve(
+                    to: CGPoint(x: x + w * 0.8, y: baseY),
+                    control: CGPoint(x: x + w * 0.5, y: baseY - w * 0.55)
+                )
+            } else if i % 3 == 2 {
+                sil.addLine(to: CGPoint(x: x + w * 0.42, y: baseY))
+                sil.addLine(to: CGPoint(x: x + w * 0.46, y: baseY - w * 0.5))
+                sil.addLine(to: CGPoint(x: x + w * 0.5, y: baseY - w * 0.62))
+                sil.addLine(to: CGPoint(x: x + w * 0.54, y: baseY - w * 0.5))
+                sil.addLine(to: CGPoint(x: x + w * 0.58, y: baseY))
+            } else {
+                sil.addLine(to: CGPoint(x: x + w, y: baseY))
+            }
+            x += w
+            i += 1
+        }
+        sil.addLine(to: CGPoint(x: size.width, y: baseY))
+        sil.addLine(to: CGPoint(x: size.width, y: size.height))
+        sil.closeSubpath()
+        ctx.fill(sil, with: .color((night ? BSTheme.night : BSTheme.emeraldDeep).opacity(night ? 0.20 : 0.10)))
+    }
+
     private func drawStrand(ctx: GraphicsContext, size: CGSize, time: TimeInterval) {
         let d = beadDiameter(size)
         let r = d / 2
         let spacing = d * 1.08
         let anchorY = size.height * 0.46
         let cx = size.width / 2
-        let amp = size.width * 0.055
-        let sway = sin(time * 0.6) * 2.2
+        let amp = size.width * (0.055 + 0.008 * sin(time * 0.33))
+        let sway = sin(time * 0.6) * 2.2 + sin(time * 0.23) * 1.4
 
         func xPos(_ y: CGFloat) -> CGFloat {
             cx + sin((y / size.height) * .pi * 1.35 + 0.4) * amp + CGFloat(sway) * (y / size.height)

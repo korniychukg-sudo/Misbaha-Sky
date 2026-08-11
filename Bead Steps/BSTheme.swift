@@ -64,14 +64,17 @@ extension View {
 }
 
 enum BeadStyle: String, CaseIterable, Codable, Identifiable {
-    case jade, amber, walnut, onyx, pearl
+    case jade, amber, walnut, coral, onyx, rosewood, lapis, pearl
     var id: String { rawValue }
     var title: String {
         switch self {
         case .jade: return "Jade"
         case .amber: return "Amber"
         case .walnut: return "Walnut"
+        case .coral: return "Coral"
         case .onyx: return "Onyx"
+        case .rosewood: return "Rosewood"
+        case .lapis: return "Lapis"
         case .pearl: return "Pearl"
         }
     }
@@ -80,7 +83,10 @@ enum BeadStyle: String, CaseIterable, Codable, Identifiable {
         case .jade: return Color(bsHex: 0x2F7A5F)
         case .amber: return Color(bsHex: 0xC98A2E)
         case .walnut: return Color(bsHex: 0x6E4A2B)
+        case .coral: return Color(bsHex: 0xC96B52)
         case .onyx: return Color(bsHex: 0x33393E)
+        case .rosewood: return Color(bsHex: 0x77363B)
+        case .lapis: return Color(bsHex: 0x2C4A8A)
         case .pearl: return Color(bsHex: 0xE8E0D0)
         }
     }
@@ -89,7 +95,10 @@ enum BeadStyle: String, CaseIterable, Codable, Identifiable {
         case .jade: return Color(bsHex: 0x174C3A)
         case .amber: return Color(bsHex: 0x8A5A17)
         case .walnut: return Color(bsHex: 0x452C17)
+        case .coral: return Color(bsHex: 0x8A3E2C)
         case .onyx: return Color(bsHex: 0x15191C)
+        case .rosewood: return Color(bsHex: 0x4A1E22)
+        case .lapis: return Color(bsHex: 0x172B58)
         case .pearl: return Color(bsHex: 0xB9AE99)
         }
     }
@@ -98,7 +107,10 @@ enum BeadStyle: String, CaseIterable, Codable, Identifiable {
         case .jade: return Color(bsHex: 0x9FD4BC)
         case .amber: return Color(bsHex: 0xF2CE8B)
         case .walnut: return Color(bsHex: 0xB98D62)
+        case .coral: return Color(bsHex: 0xF2B29A)
         case .onyx: return Color(bsHex: 0x7C8890)
+        case .rosewood: return Color(bsHex: 0xC08287)
+        case .lapis: return Color(bsHex: 0x8FA8DE)
         case .pearl: return Color(bsHex: 0xFFFBF0)
         }
     }

@@ -30,6 +30,7 @@ struct BSState: Codable {
     var onboarded: Bool = false
     var earned: Set<String> = []
     var roundsCompleted: Int = 0
+    var unlockedStyles: Set<String> = [BeadStyle.jade.rawValue]
 
     init() {}
 
@@ -37,6 +38,7 @@ struct BSState: Codable {
         case totalBeads, daily, perItem, sessions, setCompletions, setDayLog, prayerByDay
         case namesRead, favNames, guidesRead, quizBest, quizRounds, stylesTried
         case beadStyleRaw, hapticsOn, showTranslit, onboarded, earned, roundsCompleted
+        case unlockedStyles
     }
 
     init(from decoder: Decoder) throws {
@@ -60,6 +62,7 @@ struct BSState: Codable {
         onboarded = (try? c.decodeIfPresent(Bool.self, forKey: .onboarded)) ?? false
         earned = (try? c.decodeIfPresent(Set<String>.self, forKey: .earned)) ?? []
         roundsCompleted = (try? c.decodeIfPresent(Int.self, forKey: .roundsCompleted)) ?? 0
+        unlockedStyles = (try? c.decodeIfPresent(Set<String>.self, forKey: .unlockedStyles)) ?? [BeadStyle.jade.rawValue]
     }
 }
 
@@ -86,6 +89,7 @@ final class BSStore: ObservableObject {
             state = BSState()
         }
         BSHaptics.enabled = state.hapticsOn
+        evaluateUnlocks(announce: false)
     }
 
     private func save() {
@@ -212,10 +216,56 @@ final class BSStore: ObservableObject {
     }
 
     func setBeadStyle(_ style: BeadStyle) {
+        guard isUnlocked(style) else { return }
         state.beadStyleRaw = style.rawValue
         state.stylesTried.insert(style.rawValue)
         evaluateBadges()
         save()
+    }
+
+    func isUnlocked(_ style: BeadStyle) -> Bool {
+        state.unlockedStyles.contains(style.rawValue)
+    }
+
+    func unlockHint(_ style: BeadStyle) -> String {
+        switch style {
+        case .jade: return "Yours from the start"
+        case .amber: return "Count 1,000 beads in all"
+        case .walnut: return "Keep a 7-day streak"
+        case .coral: return "Complete 25 rounds"
+        case .onyx: return "Count 5,000 beads in all"
+        case .rosewood: return "Complete 20 adhkar sets"
+        case .lapis: return "Read 15 of the names"
+        case .pearl: return "Count 10,000 beads in all"
+        }
+    }
+
+    private func styleEarned(_ style: BeadStyle) -> Bool {
+        switch style {
+        case .jade: return true
+        case .amber: return state.totalBeads >= 1000
+        case .walnut: return streak >= 7
+        case .coral: return state.roundsCompleted >= 25
+        case .onyx: return state.totalBeads >= 5000
+        case .rosewood: return state.setCompletions.values.reduce(0, +) >= 20
+        case .lapis: return state.namesRead.count >= 15
+        case .pearl: return state.totalBeads >= 10000
+        }
+    }
+
+    private func evaluateUnlocks(announce: Bool = true) {
+        for style in BeadStyle.allCases where !state.unlockedStyles.contains(style.rawValue) {
+            if styleEarned(style) {
+                state.unlockedStyles.insert(style.rawValue)
+                if announce {
+                    newBadge = BSBadge(
+                        id: "unlock-" + style.rawValue,
+                        title: "\(style.title) strand unlocked",
+                        detail: unlockHint(style)
+                    )
+                }
+            }
+        }
     }
 
     func setHaptics(_ on: Bool) {
@@ -273,6 +323,7 @@ final class BSStore: ObservableObject {
         if (state.setCompletions["road"] ?? 0) > 0 { award("b-traveler") }
         if state.stylesTried.count >= BeadStyle.allCases.count { award("b-styles") }
         if state.roundsCompleted >= 100 { award("b-hundredsessions") }
+        evaluateUnlocks()
     }
 
     func heatValue(for date: Date) -> Int {

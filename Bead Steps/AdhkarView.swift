@@ -6,6 +6,7 @@ struct AdhkarView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
+                WirdCard()
                 suggestionCard
                 ForEach(BSCatalog.sets) { set in
                     NavigationLink(destination: AdhkarDetailView(set: set)) {
@@ -27,6 +28,25 @@ struct AdhkarView: View {
             }
         }
     }
+
+    struct WirdStep: Identifiable {
+        let id: String
+        let label: String
+        let setId: String
+        let prayerIndex: Int
+    }
+
+    static let wirdSteps: [WirdStep] = [
+        WirdStep(id: "w-waking", label: "Waking", setId: "waking", prayerIndex: 0),
+        WirdStep(id: "w-morning", label: "Morning", setId: "morning", prayerIndex: 0),
+        WirdStep(id: "w-fajr", label: "Fajr", setId: "prayer", prayerIndex: 1),
+        WirdStep(id: "w-dhuhr", label: "Dhuhr", setId: "prayer", prayerIndex: 2),
+        WirdStep(id: "w-asr", label: "Asr", setId: "prayer", prayerIndex: 3),
+        WirdStep(id: "w-maghrib", label: "Maghrib", setId: "prayer", prayerIndex: 4),
+        WirdStep(id: "w-isha", label: "Isha", setId: "prayer", prayerIndex: 5),
+        WirdStep(id: "w-evening", label: "Evening", setId: "evening", prayerIndex: 0),
+        WirdStep(id: "w-sleep", label: "Sleep", setId: "sleep", prayerIndex: 0)
+    ]
 
     private var suggestionCard: some View {
         let suggested = store.suggestedSet()
@@ -101,5 +121,100 @@ struct AdhkarView: View {
                 .strokeBorder(BSTheme.line, lineWidth: 1)
         )
         .shadow(color: BSTheme.ink.opacity(0.06), radius: 8, x: 0, y: 3)
+    }
+}
+
+struct WirdCard: View {
+    @EnvironmentObject var store: BSStore
+
+    private var steps: [AdhkarView.WirdStep] { AdhkarView.wirdSteps }
+
+    private func isDone(_ step: AdhkarView.WirdStep) -> Bool {
+        let today = BSStore.dayKey()
+        if step.prayerIndex > 0 {
+            return (store.state.prayerByDay[today] ?? 0) >= step.prayerIndex
+        }
+        return (store.state.setDayLog[step.setId] ?? []).contains(today)
+    }
+
+    private var doneCount: Int {
+        steps.filter { isDone($0) }.count
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 10) {
+                ZStack {
+                    ProgressRing(progress: Double(doneCount) / Double(steps.count), lineWidth: 4, tint: BSTheme.gold)
+                        .frame(width: 34, height: 34)
+                    Text("\(doneCount)")
+                        .font(BSTheme.round(12))
+                        .foregroundColor(BSTheme.ink)
+                }
+                VStack(alignment: .leading, spacing: 1) {
+                    Text("The day's wird")
+                        .font(BSTheme.serif(17))
+                        .foregroundColor(BSTheme.ink)
+                    Text(doneCount == steps.count
+                         ? "Every station of the day is counted"
+                         : "\(steps.count - doneCount) stations of remembrance remain")
+                        .font(BSTheme.text(11))
+                        .foregroundColor(BSTheme.inkSoft)
+                }
+                Spacer()
+            }
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(alignment: .top, spacing: 0) {
+                    ForEach(Array(steps.enumerated()), id: \.element.id) { idx, step in
+                        HStack(alignment: .top, spacing: 0) {
+                            if idx > 0 {
+                                Rectangle()
+                                    .fill(isDone(step) && isDone(steps[idx - 1]) ? BSTheme.gold.opacity(0.6) : BSTheme.line)
+                                    .frame(width: 18, height: 2)
+                                    .padding(.top, 19)
+                            }
+                            wirdNode(step)
+                        }
+                    }
+                }
+                .padding(.vertical, 2)
+            }
+        }
+        .bsCard()
+    }
+
+    private func wirdNode(_ step: AdhkarView.WirdStep) -> some View {
+        let done = isDone(step)
+        return Button {
+            guard let set = BSCatalog.set(step.setId), let first = set.items.first else { return }
+            store.pendingLaunch = RoundSpec.fromItem(
+                first, setId: set.id, queueIds: set.items.map { $0.id }, queueIndex: 0
+            )
+            store.activeTab = 0
+            BSHaptics.tap()
+        } label: {
+            VStack(spacing: 4) {
+                ZStack {
+                    Circle()
+                        .fill(done ? BSTheme.gold.opacity(0.16) : BSTheme.paperDeep.opacity(0.6))
+                        .frame(width: 40, height: 40)
+                    Circle()
+                        .strokeBorder(done ? BSTheme.gold : BSTheme.line, lineWidth: 1.6)
+                        .frame(width: 40, height: 40)
+                    if done {
+                        CheckIcon(size: 15, color: BSTheme.gold)
+                    } else {
+                        Text("\(steps.firstIndex(where: { $0.id == step.id }).map { $0 + 1 } ?? 0)")
+                            .font(BSTheme.round(13))
+                            .foregroundColor(BSTheme.inkFaint)
+                    }
+                }
+                Text(step.label)
+                    .font(BSTheme.text(10, done ? .semibold : .medium))
+                    .foregroundColor(done ? BSTheme.ink : BSTheme.inkFaint)
+            }
+            .frame(width: 52)
+        }
+        .buttonStyle(ScalePressStyle())
     }
 }

@@ -37,15 +37,28 @@ struct SettingsView: View {
     }
 
     private var beadStyleCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Bead material")
-                .font(BSTheme.serif(16))
-                .foregroundColor(BSTheme.ink)
-            HStack(spacing: 10) {
+        let unlockedCount = BeadStyle.allCases.filter { store.isUnlocked($0) }.count
+        return VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("The strand shelf")
+                    .font(BSTheme.serif(16))
+                    .foregroundColor(BSTheme.ink)
+                Spacer()
+                BSChip(text: "\(unlockedCount) of \(BeadStyle.allCases.count)", tint: BSTheme.gold)
+            }
+            Text("Materials are earned by practice. The strand you count with is the one you chose here.")
+                .font(BSTheme.text(11))
+                .foregroundColor(BSTheme.inkFaint)
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 4), spacing: 12) {
                 ForEach(BeadStyle.allCases) { style in
+                    let unlocked = store.isUnlocked(style)
                     Button {
-                        store.setBeadStyle(style)
-                        BSHaptics.tap()
+                        if unlocked {
+                            store.setBeadStyle(style)
+                            BSHaptics.tap()
+                        } else {
+                            BSHaptics.warm()
+                        }
                     } label: {
                         VStack(spacing: 5) {
                             ZStack {
@@ -58,6 +71,12 @@ struct SettingsView: View {
                                         )
                                     )
                                     .frame(width: 38, height: 38)
+                                    .opacity(unlocked ? 1 : 0.28)
+                                if !unlocked {
+                                    Circle()
+                                        .strokeBorder(BSTheme.line, style: StrokeStyle(lineWidth: 1.6, dash: [4, 3]))
+                                        .frame(width: 46, height: 46)
+                                }
                                 if store.beadStyle == style {
                                     Circle()
                                         .strokeBorder(BSTheme.gold, lineWidth: 2)
@@ -67,7 +86,13 @@ struct SettingsView: View {
                             .frame(width: 48, height: 48)
                             Text(style.title)
                                 .font(BSTheme.text(10, .semibold))
-                                .foregroundColor(store.beadStyle == style ? BSTheme.ink : BSTheme.inkFaint)
+                                .foregroundColor(unlocked ? (store.beadStyle == style ? BSTheme.ink : BSTheme.inkSoft) : BSTheme.inkFaint)
+                            Text(unlocked ? (store.beadStyle == style ? "In hand" : "Ready") : store.unlockHint(style))
+                                .font(BSTheme.text(8))
+                                .foregroundColor(BSTheme.inkFaint)
+                                .multilineTextAlignment(.center)
+                                .lineLimit(2)
+                                .frame(height: 22, alignment: .top)
                         }
                         .frame(maxWidth: .infinity)
                     }
