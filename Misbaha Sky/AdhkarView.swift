@@ -1,14 +1,14 @@
 import SwiftUI
 
 struct AdhkarView: View {
-    @EnvironmentObject var store: BSStore
+    @EnvironmentObject var store: MSStore
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 WirdCard()
                 suggestionCard
-                ForEach(BSCatalog.sets) { set in
+                ForEach(MSCatalog.sets) { set in
                     NavigationLink(destination: AdhkarDetailView(set: set)) {
                         setCard(set)
                     }
@@ -18,13 +18,13 @@ struct AdhkarView: View {
             .padding(16)
             .padding(.bottom, 12)
         }
-        .background(BSTheme.paper.ignoresSafeArea())
+        .background(MSTheme.paper.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("Adhkar")
-                    .font(BSTheme.serif(18))
-                    .foregroundColor(BSTheme.ink)
+                    .font(MSTheme.serif(18))
+                    .foregroundColor(MSTheme.ink)
             }
         }
     }
@@ -52,29 +52,29 @@ struct AdhkarView: View {
         let suggested = store.suggestedSet()
         return NavigationLink(destination: AdhkarDetailView(set: suggested)) {
             HStack(spacing: 12) {
-                GeometricRosette(tint: BSTheme.gold, petals: 8)
+                GeometricRosette(tint: MSTheme.gold, petals: 8)
                     .frame(width: 40, height: 40)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("For this hour")
-                        .font(BSTheme.text(11, .semibold))
-                        .foregroundColor(BSTheme.inkFaint)
+                        .font(MSTheme.text(11, .semibold))
+                        .foregroundColor(MSTheme.inkFaint)
                     Text(suggested.title)
-                        .font(BSTheme.serif(17))
-                        .foregroundColor(BSTheme.ink)
+                        .font(MSTheme.serif(17))
+                        .foregroundColor(MSTheme.ink)
                     Text(suggested.timeHint)
-                        .font(BSTheme.text(12))
-                        .foregroundColor(BSTheme.inkSoft)
+                        .font(MSTheme.text(12))
+                        .foregroundColor(MSTheme.inkSoft)
                 }
                 Spacer()
                 ChevronIcon()
             }
             .padding(14)
             .background(
-                RoundedRectangle(cornerRadius: BSTheme.corner, style: .continuous)
-                    .fill(BSTheme.goldSoft.opacity(0.45))
+                RoundedRectangle(cornerRadius: MSTheme.corner, style: .continuous)
+                    .fill(MSTheme.goldSoft.opacity(0.45))
                     .overlay(
-                        RoundedRectangle(cornerRadius: BSTheme.corner, style: .continuous)
-                            .strokeBorder(BSTheme.gold.opacity(0.4), lineWidth: 1)
+                        RoundedRectangle(cornerRadius: MSTheme.corner, style: .continuous)
+                            .strokeBorder(MSTheme.gold.opacity(0.4), lineWidth: 1)
                     )
             )
         }
@@ -93,10 +93,10 @@ struct AdhkarView: View {
                 )
                 VStack(alignment: .leading, spacing: 2) {
                     Text(set.title)
-                        .font(BSTheme.serif(21))
+                        .font(MSTheme.serif(21))
                         .foregroundColor(.white)
                     Text(set.subtitle)
-                        .font(BSTheme.text(12))
+                        .font(MSTheme.text(12))
                         .foregroundColor(.white.opacity(0.85))
                 }
                 .padding(14)
@@ -104,33 +104,33 @@ struct AdhkarView: View {
             .frame(height: 148)
             .clipped()
             HStack {
-                BSChip(text: set.timeHint, tint: BSTheme.emerald)
-                BSChip(text: "\(set.items.count) remembrances", tint: BSTheme.terra)
-                BSChip(text: "\(set.totalBeads) beads", tint: BSTheme.gold)
+                MSChip(text: set.timeHint, tint: MSTheme.emerald)
+                MSChip(text: "\(set.items.count) remembrances", tint: MSTheme.terra)
+                MSChip(text: "\(set.totalBeads) beads", tint: MSTheme.gold)
                 Spacer()
                 if (store.state.setCompletions[set.id] ?? 0) > 0 {
                     CheckIcon()
                 }
             }
             .padding(12)
-            .background(BSTheme.card)
+            .background(MSTheme.card)
         }
-        .clipShape(RoundedRectangle(cornerRadius: BSTheme.corner, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: MSTheme.corner, style: .continuous))
         .overlay(
-            RoundedRectangle(cornerRadius: BSTheme.corner, style: .continuous)
-                .strokeBorder(BSTheme.line, lineWidth: 1)
+            RoundedRectangle(cornerRadius: MSTheme.corner, style: .continuous)
+                .strokeBorder(MSTheme.line, lineWidth: 1)
         )
-        .shadow(color: BSTheme.ink.opacity(0.06), radius: 8, x: 0, y: 3)
+        .shadow(color: MSTheme.ink.opacity(0.06), radius: 8, x: 0, y: 3)
     }
 }
 
 struct WirdCard: View {
-    @EnvironmentObject var store: BSStore
+    @EnvironmentObject var store: MSStore
 
     private var steps: [AdhkarView.WirdStep] { AdhkarView.wirdSteps }
 
     private func isDone(_ step: AdhkarView.WirdStep) -> Bool {
-        let today = BSStore.dayKey()
+        let today = MSStore.dayKey()
         if step.prayerIndex > 0 {
             return (store.state.prayerByDay[today] ?? 0) >= step.prayerIndex
         }
@@ -145,21 +145,21 @@ struct WirdCard: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 10) {
                 ZStack {
-                    ProgressRing(progress: Double(doneCount) / Double(steps.count), lineWidth: 4, tint: BSTheme.gold)
+                    ProgressRing(progress: Double(doneCount) / Double(steps.count), lineWidth: 4, tint: MSTheme.gold)
                         .frame(width: 34, height: 34)
                     Text("\(doneCount)")
-                        .font(BSTheme.round(12))
-                        .foregroundColor(BSTheme.ink)
+                        .font(MSTheme.round(12))
+                        .foregroundColor(MSTheme.ink)
                 }
                 VStack(alignment: .leading, spacing: 1) {
                     Text("The day's wird")
-                        .font(BSTheme.serif(17))
-                        .foregroundColor(BSTheme.ink)
+                        .font(MSTheme.serif(17))
+                        .foregroundColor(MSTheme.ink)
                     Text(doneCount == steps.count
                          ? "Every station of the day is counted"
                          : "\(steps.count - doneCount) stations of remembrance remain")
-                        .font(BSTheme.text(11))
-                        .foregroundColor(BSTheme.inkSoft)
+                        .font(MSTheme.text(11))
+                        .foregroundColor(MSTheme.inkSoft)
                 }
                 Spacer()
             }
@@ -169,7 +169,7 @@ struct WirdCard: View {
                         HStack(alignment: .top, spacing: 0) {
                             if idx > 0 {
                                 Rectangle()
-                                    .fill(isDone(step) && isDone(steps[idx - 1]) ? BSTheme.gold.opacity(0.6) : BSTheme.line)
+                                    .fill(isDone(step) && isDone(steps[idx - 1]) ? MSTheme.gold.opacity(0.6) : MSTheme.line)
                                     .frame(width: 18, height: 2)
                                     .padding(.top, 19)
                             }
@@ -180,38 +180,38 @@ struct WirdCard: View {
                 .padding(.vertical, 2)
             }
         }
-        .bsCard()
+        .msCard()
     }
 
     private func wirdNode(_ step: AdhkarView.WirdStep) -> some View {
         let done = isDone(step)
         return Button {
-            guard let set = BSCatalog.set(step.setId), let first = set.items.first else { return }
+            guard let set = MSCatalog.set(step.setId), let first = set.items.first else { return }
             store.pendingLaunch = RoundSpec.fromItem(
                 first, setId: set.id, queueIds: set.items.map { $0.id }, queueIndex: 0
             )
             store.activeTab = 0
-            BSHaptics.tap()
+            MSHaptics.tap()
         } label: {
             VStack(spacing: 4) {
                 ZStack {
                     Circle()
-                        .fill(done ? BSTheme.gold.opacity(0.16) : BSTheme.paperDeep.opacity(0.6))
+                        .fill(done ? MSTheme.gold.opacity(0.16) : MSTheme.paperDeep.opacity(0.6))
                         .frame(width: 40, height: 40)
                     Circle()
-                        .strokeBorder(done ? BSTheme.gold : BSTheme.line, lineWidth: 1.6)
+                        .strokeBorder(done ? MSTheme.gold : MSTheme.line, lineWidth: 1.6)
                         .frame(width: 40, height: 40)
                     if done {
-                        CheckIcon(size: 15, color: BSTheme.gold)
+                        CheckIcon(size: 15, color: MSTheme.gold)
                     } else {
                         Text("\(steps.firstIndex(where: { $0.id == step.id }).map { $0 + 1 } ?? 0)")
-                            .font(BSTheme.round(13))
-                            .foregroundColor(BSTheme.inkFaint)
+                            .font(MSTheme.round(13))
+                            .foregroundColor(MSTheme.inkFaint)
                     }
                 }
                 Text(step.label)
-                    .font(BSTheme.text(10, done ? .semibold : .medium))
-                    .foregroundColor(done ? BSTheme.ink : BSTheme.inkFaint)
+                    .font(MSTheme.text(10, done ? .semibold : .medium))
+                    .foregroundColor(done ? MSTheme.ink : MSTheme.inkFaint)
             }
             .frame(width: 52)
         }

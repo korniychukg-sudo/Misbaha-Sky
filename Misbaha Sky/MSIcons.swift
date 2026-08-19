@@ -144,7 +144,7 @@ struct JournalIcon: View {
 
 struct ChevronIcon: View {
     var size: CGFloat = 12
-    var color: Color = BSTheme.inkFaint
+    var color: Color = MSTheme.inkFaint
     var body: some View {
         Canvas { ctx, sz in
             var p = Path()
@@ -159,7 +159,7 @@ struct ChevronIcon: View {
 
 struct CheckIcon: View {
     var size: CGFloat = 14
-    var color: Color = BSTheme.emerald
+    var color: Color = MSTheme.emerald
     var body: some View {
         Canvas { ctx, sz in
             var p = Path()
@@ -174,7 +174,7 @@ struct CheckIcon: View {
 
 struct HeartIcon: View {
     var size: CGFloat = 16
-    var color: Color = BSTheme.terra
+    var color: Color = MSTheme.terra
     var filled: Bool = false
     var body: some View {
         Canvas { ctx, sz in

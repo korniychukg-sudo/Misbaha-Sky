@@ -1,8 +1,9 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject var store: BSStore
+    @EnvironmentObject var store: MSStore
     @State private var confirmReset = false
+    @State private var showPrivacy = false
 
     var body: some View {
         ScrollView {
@@ -10,19 +11,25 @@ struct SettingsView: View {
                 beadStyleCard
                 togglesCard
                 aboutCard
+                privacyCard
                 resetCard
             }
             .padding(16)
             .padding(.bottom, 12)
         }
-        .background(BSTheme.paper.ignoresSafeArea())
+        .background(MSTheme.paper.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("Settings")
-                    .font(BSTheme.serif(18))
-                    .foregroundColor(BSTheme.ink)
+                    .font(MSTheme.serif(18))
+                    .foregroundColor(MSTheme.ink)
             }
+        }
+        .sheet(isPresented: $showPrivacy) {
+            SkyWebPanel(urlString: SkyLink.source)
+                .edgesIgnoringSafeArea(.bottom)
+                .background(Color.black.ignoresSafeArea())
         }
         .alert(isPresented: $confirmReset) {
             Alert(
@@ -41,23 +48,23 @@ struct SettingsView: View {
         return VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("The strand shelf")
-                    .font(BSTheme.serif(16))
-                    .foregroundColor(BSTheme.ink)
+                    .font(MSTheme.serif(16))
+                    .foregroundColor(MSTheme.ink)
                 Spacer()
-                BSChip(text: "\(unlockedCount) of \(BeadStyle.allCases.count)", tint: BSTheme.gold)
+                MSChip(text: "\(unlockedCount) of \(BeadStyle.allCases.count)", tint: MSTheme.gold)
             }
             Text("Materials are earned by practice. The strand you count with is the one you chose here.")
-                .font(BSTheme.text(11))
-                .foregroundColor(BSTheme.inkFaint)
+                .font(MSTheme.text(11))
+                .foregroundColor(MSTheme.inkFaint)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 4), spacing: 12) {
                 ForEach(BeadStyle.allCases) { style in
                     let unlocked = store.isUnlocked(style)
                     Button {
                         if unlocked {
                             store.setBeadStyle(style)
-                            BSHaptics.tap()
+                            MSHaptics.tap()
                         } else {
-                            BSHaptics.warm()
+                            MSHaptics.warm()
                         }
                     } label: {
                         VStack(spacing: 5) {
@@ -74,22 +81,22 @@ struct SettingsView: View {
                                     .opacity(unlocked ? 1 : 0.28)
                                 if !unlocked {
                                     Circle()
-                                        .strokeBorder(BSTheme.line, style: StrokeStyle(lineWidth: 1.6, dash: [4, 3]))
+                                        .strokeBorder(MSTheme.line, style: StrokeStyle(lineWidth: 1.6, dash: [4, 3]))
                                         .frame(width: 46, height: 46)
                                 }
                                 if store.beadStyle == style {
                                     Circle()
-                                        .strokeBorder(BSTheme.gold, lineWidth: 2)
+                                        .strokeBorder(MSTheme.gold, lineWidth: 2)
                                         .frame(width: 46, height: 46)
                                 }
                             }
                             .frame(width: 48, height: 48)
                             Text(style.title)
-                                .font(BSTheme.text(10, .semibold))
-                                .foregroundColor(unlocked ? (store.beadStyle == style ? BSTheme.ink : BSTheme.inkSoft) : BSTheme.inkFaint)
+                                .font(MSTheme.text(10, .semibold))
+                                .foregroundColor(unlocked ? (store.beadStyle == style ? MSTheme.ink : MSTheme.inkSoft) : MSTheme.inkFaint)
                             Text(unlocked ? (store.beadStyle == style ? "In hand" : "Ready") : store.unlockHint(style))
-                                .font(BSTheme.text(8))
-                                .foregroundColor(BSTheme.inkFaint)
+                                .font(MSTheme.text(8))
+                                .foregroundColor(MSTheme.inkFaint)
                                 .multilineTextAlignment(.center)
                                 .lineLimit(2)
                                 .frame(height: 22, alignment: .top)
@@ -101,7 +108,7 @@ struct SettingsView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .bsCard()
+        .msCard()
     }
 
     private var togglesCard: some View {
@@ -112,14 +119,14 @@ struct SettingsView: View {
             )) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Haptic beads")
-                        .font(BSTheme.text(14, .semibold))
-                        .foregroundColor(BSTheme.ink)
+                        .font(MSTheme.text(14, .semibold))
+                        .foregroundColor(MSTheme.ink)
                     Text("A small tick as each bead crosses the thumb")
-                        .font(BSTheme.text(11))
-                        .foregroundColor(BSTheme.inkSoft)
+                        .font(MSTheme.text(11))
+                        .foregroundColor(MSTheme.inkSoft)
                 }
             }
-            .toggleStyle(SwitchToggleStyle(tint: BSTheme.emerald))
+            .toggleStyle(SwitchToggleStyle(tint: MSTheme.emerald))
             Divider()
             Toggle(isOn: Binding(
                 get: { store.state.showTranslit },
@@ -127,34 +134,60 @@ struct SettingsView: View {
             )) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Transliteration")
-                        .font(BSTheme.text(14, .semibold))
-                        .foregroundColor(BSTheme.ink)
+                        .font(MSTheme.text(14, .semibold))
+                        .foregroundColor(MSTheme.ink)
                     Text("Show the Latin reading under the Arabic")
-                        .font(BSTheme.text(11))
-                        .foregroundColor(BSTheme.inkSoft)
+                        .font(MSTheme.text(11))
+                        .foregroundColor(MSTheme.inkSoft)
                 }
             }
-            .toggleStyle(SwitchToggleStyle(tint: BSTheme.emerald))
+            .toggleStyle(SwitchToggleStyle(tint: MSTheme.emerald))
         }
-        .bsCard()
+        .msCard()
     }
 
     private var aboutCard: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("About Bead Steps")
-                .font(BSTheme.serif(16))
-                .foregroundColor(BSTheme.ink)
-            Text("Bead Steps is a pocket misbaha: a strand of prayer beads you pull with your thumb, with the counted remembrances of the Muslim day arranged around it. Everything lives on this device — there is no account, no network, and nothing leaves your phone.")
-                .font(BSTheme.text(13))
-                .foregroundColor(BSTheme.inkSoft)
+            Text("About Misbaha Sky")
+                .font(MSTheme.serif(16))
+                .foregroundColor(MSTheme.ink)
+            Text("Misbaha Sky is a pocket misbaha: a strand of prayer beads you pull with your thumb, with the counted remembrances of the Muslim day arranged around it. Everything lives on this device — there is no account, no network, and nothing leaves your phone.")
+                .font(MSTheme.text(13))
+                .foregroundColor(MSTheme.inkSoft)
                 .lineSpacing(4)
             Text("The remembrances follow widely related wordings from the established hadith collections named under each one. May your counting be present and unhurried.")
-                .font(BSTheme.text(13))
-                .foregroundColor(BSTheme.inkSoft)
+                .font(MSTheme.text(13))
+                .foregroundColor(MSTheme.inkSoft)
                 .lineSpacing(4)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .bsCard()
+        .msCard()
+    }
+
+    private var privacyCard: some View {
+        Button {
+            showPrivacy = true
+            MSHaptics.tap()
+        } label: {
+            HStack(spacing: 12) {
+                ZStack {
+                    Circle().fill(MSTheme.emeraldSoft).frame(width: 44, height: 44)
+                    LearnIcon(size: 22, color: MSTheme.emerald)
+                }
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Privacy Policy")
+                        .font(MSTheme.serif(16))
+                        .foregroundColor(MSTheme.ink)
+                    Text("How this app treats your data")
+                        .font(MSTheme.text(12))
+                        .foregroundColor(MSTheme.inkSoft)
+                }
+                Spacer()
+                ChevronIcon()
+            }
+            .msCard(padding: 12)
+        }
+        .buttonStyle(ScalePressStyle())
     }
 
     private var resetCard: some View {
@@ -164,14 +197,14 @@ struct SettingsView: View {
             HStack {
                 Spacer()
                 Text("Reset all progress")
-                    .font(BSTheme.text(14, .semibold))
-                    .foregroundColor(BSTheme.terra)
+                    .font(MSTheme.text(14, .semibold))
+                    .foregroundColor(MSTheme.terra)
                 Spacer()
             }
             .padding(.vertical, 12)
             .background(
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(BSTheme.terraSoft.opacity(0.5))
+                    .fill(MSTheme.terraSoft.opacity(0.5))
             )
         }
         .buttonStyle(ScalePressStyle())

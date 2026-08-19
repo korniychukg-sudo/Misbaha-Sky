@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct RootView: View {
-    @EnvironmentObject var store: BSStore
+    @EnvironmentObject var store: MSStore
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -56,32 +56,32 @@ struct RootView: View {
         .padding(.top, 8)
         .padding(.bottom, 4)
         .background(
-            BSTheme.card
-                .overlay(Rectangle().fill(BSTheme.line).frame(height: 1), alignment: .top)
+            MSTheme.card
+                .overlay(Rectangle().fill(MSTheme.line).frame(height: 1), alignment: .top)
                 .edgesIgnoringSafeArea(.bottom)
         )
     }
 
     private func tabButton(_ index: Int, _ label: String, icon: @escaping (Color) -> AnyView) -> some View {
         let active = store.activeTab == index
-        let color = active ? BSTheme.emerald : BSTheme.inkFaint
+        let color = active ? MSTheme.emerald : MSTheme.inkFaint
         return Button {
             if store.activeTab != index {
                 store.activeTab = index
-                BSHaptics.tap()
+                MSHaptics.tap()
             }
         } label: {
             VStack(spacing: 3) {
                 icon(color)
                 Text(label)
-                    .font(BSTheme.text(10, active ? .semibold : .medium))
+                    .font(MSTheme.text(10, active ? .semibold : .medium))
                     .foregroundColor(color)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 2)
             .background(
                 Capsule()
-                    .fill(active ? BSTheme.emerald.opacity(0.09) : Color.clear)
+                    .fill(active ? MSTheme.emerald.opacity(0.09) : Color.clear)
                     .padding(.horizontal, 8)
             )
         }

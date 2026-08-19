@@ -47,10 +47,10 @@ enum QuizEngine {
     }
 
     private static func nameMeaningQuestion(_ rng: inout SeededRandom, used: inout Set<Int>) -> QuizQuestion? {
-        let pool = BSCatalog.names.filter { !used.contains($0.id) }
+        let pool = MSCatalog.names.filter { !used.contains($0.id) }
         guard let pick = pool.shuffled(using: &rng).first else { return nil }
         used.insert(pick.id)
-        var wrong = BSCatalog.names.filter { $0.id != pick.id }.shuffled(using: &rng).prefix(3).map { $0.meaning }
+        var wrong = MSCatalog.names.filter { $0.id != pick.id }.shuffled(using: &rng).prefix(3).map { $0.meaning }
         wrong = Array(Set(wrong)).filter { $0 != pick.meaning }
         guard wrong.count >= 3 else { return nil }
         var options = Array(wrong.prefix(3)) + [pick.meaning]
@@ -66,10 +66,10 @@ enum QuizEngine {
     }
 
     private static func meaningNameQuestion(_ rng: inout SeededRandom, used: inout Set<Int>) -> QuizQuestion? {
-        let pool = BSCatalog.names.filter { !used.contains($0.id) }
+        let pool = MSCatalog.names.filter { !used.contains($0.id) }
         guard let pick = pool.shuffled(using: &rng).first else { return nil }
         used.insert(pick.id)
-        var wrong = BSCatalog.names.filter { $0.id != pick.id }.shuffled(using: &rng).prefix(3).map { $0.translit }
+        var wrong = MSCatalog.names.filter { $0.id != pick.id }.shuffled(using: &rng).prefix(3).map { $0.translit }
         wrong = Array(Set(wrong)).filter { $0 != pick.translit }
         guard wrong.count >= 3 else { return nil }
         var options = Array(wrong.prefix(3)) + [pick.translit]
@@ -85,10 +85,10 @@ enum QuizEngine {
     }
 
     private static func glossaryQuestion(_ rng: inout SeededRandom, used: inout Set<String>) -> QuizQuestion? {
-        let pool = BSCatalog.glossary.filter { !used.contains($0.id) }
+        let pool = MSCatalog.glossary.filter { !used.contains($0.id) }
         guard let pick = pool.shuffled(using: &rng).first else { return nil }
         used.insert(pick.id)
-        let wrong = BSCatalog.glossary.filter { $0.id != pick.id }.shuffled(using: &rng).prefix(3).map { $0.term }
+        let wrong = MSCatalog.glossary.filter { $0.id != pick.id }.shuffled(using: &rng).prefix(3).map { $0.term }
         guard wrong.count >= 3 else { return nil }
         var options = Array(wrong) + [pick.term]
         options.shuffle(using: &rng)
@@ -103,7 +103,7 @@ enum QuizEngine {
     }
 
     private static func countQuestion(_ rng: inout SeededRandom) -> QuizQuestion? {
-        let counted = BSCatalog.sets.flatMap { set in
+        let counted = MSCatalog.sets.flatMap { set in
             set.items.filter { $0.count >= 3 }.map { (set, $0) }
         }
         guard let (set, item) = counted.shuffled(using: &rng).first else { return nil }

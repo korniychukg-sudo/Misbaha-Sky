@@ -1,6 +1,6 @@
 import UIKit
 
-enum BSHaptics {
+enum MSHaptics {
     private static let light = UIImpactFeedbackGenerator(style: .light)
     private static let medium = UIImpactFeedbackGenerator(style: .medium)
     private static let rigid = UIImpactFeedbackGenerator(style: .rigid)

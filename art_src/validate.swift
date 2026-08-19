@@ -11,7 +11,7 @@ struct Validate {
             }
         }
 
-        let sets = BSCatalog.sets
+        let sets = MSCatalog.sets
         check(sets.count == 8, "8 sets")
         var itemIds = Set<String>()
         for s in sets {
@@ -30,7 +30,7 @@ struct Validate {
         let tasbihSum = prayer.items.filter { ["prayer-tasbih", "prayer-tahmid", "prayer-takbir"].contains($0.id) }.reduce(0) { $0 + $1.count }
         check(tasbihSum == 100, "prayer tasbih sums to 100")
 
-        let names = BSCatalog.names
+        let names = MSCatalog.names
         check(names.count == 99, "99 names")
         check(Set(names.map { $0.id }).count == 99, "unique name ids")
         check(names.enumerated().allSatisfy { $0.offset + 1 == $0.element.id }, "names ordered 1-99")
@@ -39,15 +39,15 @@ struct Validate {
             check(!n.arabic.isEmpty && !n.meaning.isEmpty && !n.reflection.isEmpty, "name fields \(n.id)")
         }
 
-        check(BSCatalog.guides.count == 8, "8 guides")
-        for g in BSCatalog.guides {
+        check(MSCatalog.guides.count == 8, "8 guides")
+        for g in MSCatalog.guides {
             check(g.sections.count >= 3, "guide sections \(g.id)")
             check(!g.facts.isEmpty, "guide facts \(g.id)")
         }
-        check(Set(BSCatalog.glossary.map { $0.id }).count == BSCatalog.glossary.count, "glossary unique")
-        check(BSCatalog.glossary.count >= 28, "glossary >= 28")
-        check(Set(BSCatalog.badges.map { $0.id }).count == BSCatalog.badges.count, "badges unique")
-        check(BSCatalog.badges.count == 18, "18 badges")
+        check(Set(MSCatalog.glossary.map { $0.id }).count == MSCatalog.glossary.count, "glossary unique")
+        check(MSCatalog.glossary.count >= 28, "glossary >= 28")
+        check(Set(MSCatalog.badges.map { $0.id }).count == MSCatalog.badges.count, "badges unique")
+        check(MSCatalog.badges.count == 18, "18 badges")
 
         for seed in 1...400 {
             let round = QuizEngine.makeRound(count: 10, seed: UInt64(seed))
@@ -63,17 +63,17 @@ struct Validate {
         let art = ["set-prayer", "set-morning", "set-evening", "set-sleep", "set-waking", "set-door", "set-road", "set-heart",
                    "guide-dhikr", "guide-misbaha", "guide-rhythm", "guide-prayer", "guide-names", "guide-presence", "guide-gratitude", "guide-day",
                    "names-hero", "onboard-1", "onboard-2", "onboard-3", "onboard-4"]
-        let artDir = CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "../Bead Steps/Art"
+        let artDir = CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "../Misbaha Sky/Art"
         for a in art {
             check(FileManager.default.fileExists(atPath: "\(artDir)/\(a).jpg"), "art \(a)")
         }
-        let usedArt = sets.map { $0.artName } + BSCatalog.guides.map { $0.artName }
+        let usedArt = sets.map { $0.artName } + MSCatalog.guides.map { $0.artName }
         for a in usedArt {
             check(art.contains(a), "art referenced exists: \(a)")
         }
 
         if failures == 0 {
-            print("ALL OK: \(sets.count) sets, \(itemIds.count) dhikr items, 99 names, \(BSCatalog.guides.count) guides, \(BSCatalog.glossary.count) terms, \(BSCatalog.badges.count) badges, 400 quiz rounds validated")
+            print("ALL OK: \(sets.count) sets, \(itemIds.count) dhikr items, 99 names, \(MSCatalog.guides.count) guides, \(MSCatalog.glossary.count) terms, \(MSCatalog.badges.count) badges, 400 quiz rounds validated")
         } else {
             print("\(failures) FAILURES")
             exit(1)

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct QuizView: View {
-    @EnvironmentObject var store: BSStore
+    @EnvironmentObject var store: MSStore
     @State private var questions: [QuizQuestion] = []
     @State private var index = 0
     @State private var picked: Int? = nil
@@ -19,41 +19,41 @@ struct QuizView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(BSTheme.paper.ignoresSafeArea())
+        .background(MSTheme.paper.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("Quiz")
-                    .font(BSTheme.serif(18))
-                    .foregroundColor(BSTheme.ink)
+                    .font(MSTheme.serif(18))
+                    .foregroundColor(MSTheme.ink)
             }
         }
     }
 
     private var startView: some View {
         VStack(spacing: 18) {
-            GeometricRosette(tint: BSTheme.terra, petals: 10)
+            GeometricRosette(tint: MSTheme.terra, petals: 10)
                 .frame(width: 110, height: 110)
             Text("Ten questions")
-                .font(BSTheme.serif(24))
-                .foregroundColor(BSTheme.ink)
+                .font(MSTheme.serif(24))
+                .foregroundColor(MSTheme.ink)
             Text("Names and their meanings, terms of the practice, and the counts of the sets. Fresh questions every round, with an explanation for every answer.")
-                .font(BSTheme.text(14))
-                .foregroundColor(BSTheme.inkSoft)
+                .font(MSTheme.text(14))
+                .foregroundColor(MSTheme.inkSoft)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
             if store.state.quizRounds > 0 {
-                BSChip(text: "Personal best: \(store.state.quizBest) of 10", tint: BSTheme.terra)
+                MSChip(text: "Personal best: \(store.state.quizBest) of 10", tint: MSTheme.terra)
             }
             Button {
                 startRound()
             } label: {
                 Text("Begin")
-                    .font(BSTheme.text(16, .semibold))
+                    .font(MSTheme.text(16, .semibold))
                     .foregroundColor(.white)
                     .padding(.horizontal, 40)
                     .padding(.vertical, 12)
-                    .background(Capsule().fill(BSTheme.emerald))
+                    .background(Capsule().fill(MSTheme.emerald))
             }
             .buttonStyle(ScalePressStyle())
         }
@@ -65,20 +65,20 @@ struct QuizView: View {
         return ScrollView {
             VStack(alignment: .leading, spacing: 14) {
                 HStack {
-                    BSChip(text: "Question \(index + 1) of \(questions.count)", tint: BSTheme.emerald)
+                    MSChip(text: "Question \(index + 1) of \(questions.count)", tint: MSTheme.emerald)
                     Spacer()
-                    BSChip(text: "\(score) correct", tint: BSTheme.gold)
+                    MSChip(text: "\(score) correct", tint: MSTheme.gold)
                 }
                 if let hint = q.arabicHint {
                     Text(hint)
-                        .font(BSTheme.arabic(26))
-                        .foregroundColor(BSTheme.emerald)
+                        .font(MSTheme.arabic(26))
+                        .foregroundColor(MSTheme.emerald)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.vertical, 4)
                 }
                 Text(q.prompt)
-                    .font(BSTheme.serif(19))
-                    .foregroundColor(BSTheme.ink)
+                    .font(MSTheme.serif(19))
+                    .foregroundColor(MSTheme.ink)
                     .lineSpacing(3)
                 VStack(spacing: 9) {
                     ForEach(Array(q.options.enumerated()), id: \.offset) { i, option in
@@ -87,7 +87,7 @@ struct QuizView: View {
                         } label: {
                             HStack {
                                 Text(option)
-                                    .font(BSTheme.text(14, .medium))
+                                    .font(MSTheme.text(14, .medium))
                                     .foregroundColor(optionTextColor(i, q: q))
                                     .multilineTextAlignment(.leading)
                                 Spacer()
@@ -111,19 +111,19 @@ struct QuizView: View {
                 }
                 if picked != nil {
                     Text(q.explanation)
-                        .font(BSTheme.text(13))
-                        .foregroundColor(BSTheme.inkSoft)
+                        .font(MSTheme.text(13))
+                        .foregroundColor(MSTheme.inkSoft)
                         .lineSpacing(4)
-                        .bsCard(padding: 13)
+                        .msCard(padding: 13)
                     Button {
                         next()
                     } label: {
                         Text(index + 1 < questions.count ? "Next question" : "See result")
-                            .font(BSTheme.text(15, .semibold))
+                            .font(MSTheme.text(15, .semibold))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 12)
-                            .background(Capsule().fill(BSTheme.emerald))
+                            .background(Capsule().fill(MSTheme.emerald))
                     }
                     .buttonStyle(ScalePressStyle())
                 }
@@ -136,34 +136,34 @@ struct QuizView: View {
     private var resultView: some View {
         VStack(spacing: 16) {
             ZStack {
-                ProgressRing(progress: Double(score) / Double(max(1, questions.count)), lineWidth: 8, tint: BSTheme.gold)
+                ProgressRing(progress: Double(score) / Double(max(1, questions.count)), lineWidth: 8, tint: MSTheme.gold)
                     .frame(width: 120, height: 120)
                 VStack(spacing: 0) {
                     Text("\(score)")
-                        .font(BSTheme.round(38))
-                        .foregroundColor(BSTheme.ink)
+                        .font(MSTheme.round(38))
+                        .foregroundColor(MSTheme.ink)
                     Text("of \(questions.count)")
-                        .font(BSTheme.text(12))
-                        .foregroundColor(BSTheme.inkFaint)
+                        .font(MSTheme.text(12))
+                        .foregroundColor(MSTheme.inkFaint)
                 }
             }
             Text(resultLine)
-                .font(BSTheme.serif(22))
-                .foregroundColor(BSTheme.ink)
+                .font(MSTheme.serif(22))
+                .foregroundColor(MSTheme.ink)
             if score == questions.count {
                 Text("A perfect round.")
-                    .font(BSTheme.text(14))
-                    .foregroundColor(BSTheme.gold)
+                    .font(MSTheme.text(14))
+                    .foregroundColor(MSTheme.gold)
             }
             Button {
                 startRound()
             } label: {
                 Text("Another round")
-                    .font(BSTheme.text(16, .semibold))
+                    .font(MSTheme.text(16, .semibold))
                     .foregroundColor(.white)
                     .padding(.horizontal, 36)
                     .padding(.vertical, 12)
-                    .background(Capsule().fill(BSTheme.emerald))
+                    .background(Capsule().fill(MSTheme.emerald))
             }
             .buttonStyle(ScalePressStyle())
         }
@@ -180,24 +180,24 @@ struct QuizView: View {
     }
 
     private func optionFill(_ i: Int, q: QuizQuestion) -> Color {
-        guard let p = picked else { return BSTheme.card }
-        if i == q.correctIndex { return BSTheme.emeraldSoft }
-        if i == p { return BSTheme.terraSoft }
-        return BSTheme.card
+        guard let p = picked else { return MSTheme.card }
+        if i == q.correctIndex { return MSTheme.emeraldSoft }
+        if i == p { return MSTheme.terraSoft }
+        return MSTheme.card
     }
 
     private func optionBorder(_ i: Int, q: QuizQuestion) -> Color {
-        guard let p = picked else { return BSTheme.line }
-        if i == q.correctIndex { return BSTheme.emerald.opacity(0.5) }
-        if i == p { return BSTheme.terra.opacity(0.5) }
-        return BSTheme.line
+        guard let p = picked else { return MSTheme.line }
+        if i == q.correctIndex { return MSTheme.emerald.opacity(0.5) }
+        if i == p { return MSTheme.terra.opacity(0.5) }
+        return MSTheme.line
     }
 
     private func optionTextColor(_ i: Int, q: QuizQuestion) -> Color {
-        guard let p = picked else { return BSTheme.ink }
-        if i == q.correctIndex { return BSTheme.emeraldDeep }
-        if i == p { return BSTheme.terra }
-        return BSTheme.inkFaint
+        guard let p = picked else { return MSTheme.ink }
+        if i == q.correctIndex { return MSTheme.emeraldDeep }
+        if i == p { return MSTheme.terra }
+        return MSTheme.inkFaint
     }
 
     private func pick(_ i: Int) {
@@ -205,9 +205,9 @@ struct QuizView: View {
         picked = i
         if i == questions[index].correctIndex {
             score += 1
-            BSHaptics.success()
+            MSHaptics.success()
         } else {
-            BSHaptics.warm()
+            MSHaptics.warm()
         }
     }
 

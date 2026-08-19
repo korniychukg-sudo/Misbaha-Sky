@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct OnboardingView: View {
-    @EnvironmentObject var store: BSStore
+    @EnvironmentObject var store: MSStore
     @State private var page = 0
 
     private let pages: [(art: String, title: String, text: String)] = [
-        ("onboard-1", "A misbaha in your pocket", "Bead Steps is a strand of prayer beads that behaves like the real thing. Pull it with your thumb and feel each bead cross — every thirty-third announces itself, just as a divider does."),
+        ("onboard-1", "A misbaha in your pocket", "Misbaha Sky is a strand of prayer beads that behaves like the real thing. Pull it with your thumb and feel each bead cross — every thirty-third announces itself, just as a divider does."),
         ("onboard-2", "The remembrances of the day", "Eight sets of adhkar — morning, evening, after the prayer, before sleep and more — each with its Arabic, a plain reading, a translation and its source. Count a whole set in order, or any single phrase."),
         ("onboard-3", "The ninety-nine names", "All of al-Asma ul-Husna, each with its meaning and a line worth carrying. One name is surfaced every day; a season of days covers them all."),
         ("onboard-4", "Quiet, offline, yours", "Your counts, streaks and badges stay on this device. No account, no network, no notifications — just the beads, whenever your hands are free.")
@@ -22,17 +22,17 @@ struct OnboardingView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 24, style: .continuous)
-                                    .strokeBorder(BSTheme.line, lineWidth: 1)
+                                    .strokeBorder(MSTheme.line, lineWidth: 1)
                             )
                             .padding(.horizontal, 26)
                         Text(pages[i].title)
-                            .font(BSTheme.serif(26))
-                            .foregroundColor(BSTheme.ink)
+                            .font(MSTheme.serif(26))
+                            .foregroundColor(MSTheme.ink)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 30)
                         Text(pages[i].text)
-                            .font(BSTheme.text(15))
-                            .foregroundColor(BSTheme.inkSoft)
+                            .font(MSTheme.text(15))
+                            .foregroundColor(MSTheme.inkSoft)
                             .multilineTextAlignment(.center)
                             .lineSpacing(5)
                             .padding(.horizontal, 34)
@@ -45,7 +45,7 @@ struct OnboardingView: View {
             HStack(spacing: 7) {
                 ForEach(0..<pages.count, id: \.self) { i in
                     Capsule()
-                        .fill(i == page ? BSTheme.emerald : BSTheme.line)
+                        .fill(i == page ? MSTheme.emerald : MSTheme.line)
                         .frame(width: i == page ? 22 : 7, height: 7)
                         .animation(.easeOut(duration: 0.25), value: page)
                 }
@@ -56,15 +56,15 @@ struct OnboardingView: View {
                     withAnimation { page += 1 }
                 } else {
                     store.finishOnboarding()
-                    BSHaptics.success()
+                    MSHaptics.success()
                 }
             } label: {
                 Text(page < pages.count - 1 ? "Continue" : "Pick up the beads")
-                    .font(BSTheme.text(16, .semibold))
+                    .font(MSTheme.text(16, .semibold))
                     .foregroundColor(.white)
                     .frame(maxWidth: 340)
                     .padding(.vertical, 14)
-                    .background(Capsule().fill(BSTheme.emerald))
+                    .background(Capsule().fill(MSTheme.emerald))
             }
             .buttonStyle(ScalePressStyle())
             .padding(.horizontal, 30)
@@ -74,14 +74,14 @@ struct OnboardingView: View {
                     store.finishOnboarding()
                 } label: {
                     Text("Skip")
-                        .font(BSTheme.text(13, .medium))
-                        .foregroundColor(BSTheme.inkFaint)
+                        .font(MSTheme.text(13, .medium))
+                        .foregroundColor(MSTheme.inkFaint)
                 }
                 .padding(.bottom, 14)
             } else {
                 Color.clear.frame(height: 33)
             }
         }
-        .background(BSTheme.paper.ignoresSafeArea())
+        .background(MSTheme.paper.ignoresSafeArea())
     }
 }

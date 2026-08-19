@@ -1,14 +1,14 @@
 import SwiftUI
 
-struct BSChip: View {
+struct MSChip: View {
     let text: String
     var icon: AnyView? = nil
-    var tint: Color = BSTheme.emerald
+    var tint: Color = MSTheme.emerald
     var body: some View {
         HStack(spacing: 5) {
             if let icon = icon { icon }
             Text(text)
-                .font(BSTheme.text(12, .semibold))
+                .font(MSTheme.text(12, .semibold))
         }
         .foregroundColor(tint)
         .padding(.horizontal, 10)
@@ -17,18 +17,18 @@ struct BSChip: View {
     }
 }
 
-struct BSSectionHeader: View {
+struct MSSectionHeader: View {
     let title: String
     var subtitle: String? = nil
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(title)
-                .font(BSTheme.serif(22))
-                .foregroundColor(BSTheme.ink)
+                .font(MSTheme.serif(22))
+                .foregroundColor(MSTheme.ink)
             if let s = subtitle {
                 Text(s)
-                    .font(BSTheme.text(13))
-                    .foregroundColor(BSTheme.inkSoft)
+                    .font(MSTheme.text(13))
+                    .foregroundColor(MSTheme.inkSoft)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -38,8 +38,8 @@ struct BSSectionHeader: View {
 struct ProgressRing: View {
     let progress: Double
     var lineWidth: CGFloat = 6
-    var tint: Color = BSTheme.emerald
-    var track: Color = BSTheme.line.opacity(0.5)
+    var tint: Color = MSTheme.emerald
+    var track: Color = MSTheme.line.opacity(0.5)
     var body: some View {
         ZStack {
             Circle().stroke(track, lineWidth: lineWidth)
@@ -54,14 +54,14 @@ struct ProgressRing: View {
 
 struct WrapStack: View {
     let items: [String]
-    var tint: Color = BSTheme.emerald
+    var tint: Color = MSTheme.emerald
     var body: some View {
         var width: CGFloat = 0
         var height: CGFloat = 0
         return GeometryReader { geo in
             ZStack(alignment: .topLeading) {
                 ForEach(Array(items.enumerated()), id: \.offset) { _, item in
-                    BSChip(text: item, tint: tint)
+                    MSChip(text: item, tint: tint)
                         .padding(.trailing, 6)
                         .padding(.bottom, 6)
                         .alignmentGuide(.leading) { d in
@@ -94,25 +94,25 @@ struct WrapStack: View {
 }
 
 struct BadgeToast: View {
-    let badge: BSBadge
+    let badge: MSBadge
     var body: some View {
         HStack(spacing: 12) {
             ZStack {
-                Circle().fill(BSTheme.gold.opacity(0.18)).frame(width: 42, height: 42)
+                Circle().fill(MSTheme.gold.opacity(0.18)).frame(width: 42, height: 42)
                 StarShape(points: 8)
-                    .fill(BSTheme.gold)
+                    .fill(MSTheme.gold)
                     .frame(width: 22, height: 22)
             }
             VStack(alignment: .leading, spacing: 2) {
                 Text("Badge earned")
-                    .font(BSTheme.text(11, .semibold))
-                    .foregroundColor(BSTheme.inkFaint)
+                    .font(MSTheme.text(11, .semibold))
+                    .foregroundColor(MSTheme.inkFaint)
                 Text(badge.title)
-                    .font(BSTheme.serif(16))
-                    .foregroundColor(BSTheme.ink)
+                    .font(MSTheme.serif(16))
+                    .foregroundColor(MSTheme.ink)
                 Text(badge.detail)
-                    .font(BSTheme.text(12))
-                    .foregroundColor(BSTheme.inkSoft)
+                    .font(MSTheme.text(12))
+                    .foregroundColor(MSTheme.inkSoft)
                     .lineLimit(2)
             }
             Spacer(minLength: 0)
@@ -120,8 +120,8 @@ struct BadgeToast: View {
         .padding(14)
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(BSTheme.card)
-                .shadow(color: BSTheme.ink.opacity(0.18), radius: 14, x: 0, y: 6)
+                .fill(MSTheme.card)
+                .shadow(color: MSTheme.ink.opacity(0.18), radius: 14, x: 0, y: 6)
         )
         .padding(.horizontal, 20)
     }
@@ -146,7 +146,7 @@ struct StarShape: Shape {
 }
 
 struct GeometricRosette: View {
-    var tint: Color = BSTheme.emerald
+    var tint: Color = MSTheme.emerald
     var petals: Int = 8
     var body: some View {
         Canvas { ctx, size in
@@ -176,9 +176,9 @@ struct ScalePressStyle: ButtonStyle {
 }
 
 extension View {
-    func bsScreenBackground() -> some View {
+    func msScreenBackground() -> some View {
         ZStack {
-            BSTheme.paper.ignoresSafeArea()
+            MSTheme.paper.ignoresSafeArea()
             self
         }
     }

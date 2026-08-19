@@ -30,28 +30,28 @@ struct DivineName: Identifiable, Hashable {
     let reflection: String
 }
 
-struct BSGuideSection: Hashable {
+struct MSGuideSection: Hashable {
     let heading: String
     let body: String
 }
 
-struct BSGuide: Identifiable, Hashable {
+struct MSGuide: Identifiable, Hashable {
     let id: String
     let title: String
     let subtitle: String
     let artName: String
     let minutes: Int
-    let sections: [BSGuideSection]
+    let sections: [MSGuideSection]
     let facts: [String]
 }
 
-struct BSTerm: Identifiable, Hashable {
+struct MSTerm: Identifiable, Hashable {
     let id: String
     let term: String
     let definition: String
 }
 
-struct BSBadge: Identifiable, Hashable {
+struct MSBadge: Identifiable, Hashable {
     let id: String
     let title: String
     let detail: String
@@ -63,12 +63,12 @@ struct FreeTarget: Identifiable, Hashable {
     let count: Int
 }
 
-enum BSCatalog {
+enum MSCatalog {
     static let sets: [AdhkarSet] = AdhkarData.all
     static let names: [DivineName] = NamesData.all
-    static let guides: [BSGuide] = LoreData.guides
-    static let glossary: [BSTerm] = LoreData.glossary
-    static let badges: [BSBadge] = LoreData.badges
+    static let guides: [MSGuide] = LoreData.guides
+    static let glossary: [MSTerm] = LoreData.glossary
+    static let badges: [MSBadge] = LoreData.badges
 
     static let freeTargets: [FreeTarget] = [
         FreeTarget(id: "f33", title: "One round", count: 33),

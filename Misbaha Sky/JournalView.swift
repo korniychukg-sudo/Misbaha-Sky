@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct JournalView: View {
-    @EnvironmentObject var store: BSStore
+    @EnvironmentObject var store: MSStore
 
     var body: some View {
         ScrollView {
@@ -16,34 +16,34 @@ struct JournalView: View {
                 NavigationLink(destination: SettingsView()) {
                     HStack {
                         Text("Settings")
-                            .font(BSTheme.serif(16))
-                            .foregroundColor(BSTheme.ink)
+                            .font(MSTheme.serif(16))
+                            .foregroundColor(MSTheme.ink)
                         Spacer()
                         ChevronIcon()
                     }
-                    .bsCard(padding: 14)
+                    .msCard(padding: 14)
                 }
                 .buttonStyle(ScalePressStyle())
             }
             .padding(16)
             .padding(.bottom, 12)
         }
-        .background(BSTheme.paper.ignoresSafeArea())
+        .background(MSTheme.paper.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("Journal")
-                    .font(BSTheme.serif(18))
-                    .foregroundColor(BSTheme.ink)
+                    .font(MSTheme.serif(18))
+                    .foregroundColor(MSTheme.ink)
             }
         }
     }
 
     private var summaryRow: some View {
         HStack(spacing: 10) {
-            statCard(value: "\(store.todayCount)", label: "beads today", tint: BSTheme.emerald)
-            statCard(value: "\(store.streak)", label: "day streak", tint: BSTheme.gold)
-            statCard(value: compact(store.state.totalBeads), label: "beads in all", tint: BSTheme.terra)
+            statCard(value: "\(store.todayCount)", label: "beads today", tint: MSTheme.emerald)
+            statCard(value: "\(store.streak)", label: "day streak", tint: MSTheme.gold)
+            statCard(value: compact(store.state.totalBeads), label: "beads in all", tint: MSTheme.terra)
         }
     }
 
@@ -56,29 +56,29 @@ struct JournalView: View {
     private func statCard(value: String, label: String, tint: Color) -> some View {
         VStack(spacing: 3) {
             Text(value)
-                .font(BSTheme.round(24))
+                .font(MSTheme.round(24))
                 .foregroundColor(tint)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
             Text(label)
-                .font(BSTheme.text(11))
-                .foregroundColor(BSTheme.inkSoft)
+                .font(MSTheme.text(11))
+                .foregroundColor(MSTheme.inkSoft)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 14)
         .background(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(BSTheme.card)
+                .fill(MSTheme.card)
                 .overlay(
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .strokeBorder(BSTheme.line, lineWidth: 1)
+                        .strokeBorder(MSTheme.line, lineWidth: 1)
                 )
         )
     }
 
     private var wirdRingCard: some View {
         let steps = AdhkarView.wirdSteps
-        let today = BSStore.dayKey()
+        let today = MSStore.dayKey()
         let done = steps.filter { step in
             if step.prayerIndex > 0 {
                 return (store.state.prayerByDay[today] ?? 0) >= step.prayerIndex
@@ -87,21 +87,21 @@ struct JournalView: View {
         }.count
         return HStack(spacing: 14) {
             ZStack {
-                ProgressRing(progress: Double(done) / Double(steps.count), lineWidth: 6, tint: BSTheme.gold)
+                ProgressRing(progress: Double(done) / Double(steps.count), lineWidth: 6, tint: MSTheme.gold)
                     .frame(width: 54, height: 54)
                 Text("\(done)")
-                    .font(BSTheme.round(18))
-                    .foregroundColor(BSTheme.ink)
+                    .font(MSTheme.round(18))
+                    .foregroundColor(MSTheme.ink)
             }
             VStack(alignment: .leading, spacing: 2) {
                 Text("Today's wird")
-                    .font(BSTheme.serif(16))
-                    .foregroundColor(BSTheme.ink)
+                    .font(MSTheme.serif(16))
+                    .foregroundColor(MSTheme.ink)
                 Text(done == steps.count
                      ? "All nine stations counted — a full day."
                      : "\(done) of \(steps.count) stations of the day counted so far.")
-                    .font(BSTheme.text(12))
-                    .foregroundColor(BSTheme.inkSoft)
+                    .font(MSTheme.text(12))
+                    .foregroundColor(MSTheme.inkSoft)
             }
             Spacer()
             Button {
@@ -111,7 +111,7 @@ struct JournalView: View {
                     .padding(6)
             }
         }
-        .bsCard(padding: 14)
+        .msCard(padding: 14)
     }
 
     private var rhythmCard: some View {
@@ -127,27 +127,27 @@ struct JournalView: View {
             if buckets.contains(where: { $0 > 0 }) {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Rhythm of the day")
-                        .font(BSTheme.serif(16))
-                        .foregroundColor(BSTheme.ink)
+                        .font(MSTheme.serif(16))
+                        .foregroundColor(MSTheme.ink)
                     Text("When your hands reach for the beads")
-                        .font(BSTheme.text(11))
-                        .foregroundColor(BSTheme.inkFaint)
+                        .font(MSTheme.text(11))
+                        .foregroundColor(MSTheme.inkFaint)
                     HStack(alignment: .bottom, spacing: 7) {
                         ForEach(0..<8, id: \.self) { i in
                             VStack(spacing: 3) {
                                 RoundedRectangle(cornerRadius: 3)
-                                    .fill(buckets[i] == maxVal ? BSTheme.gold : BSTheme.emerald.opacity(buckets[i] > 0 ? 0.7 : 0.12))
+                                    .fill(buckets[i] == maxVal ? MSTheme.gold : MSTheme.emerald.opacity(buckets[i] > 0 ? 0.7 : 0.12))
                                     .frame(height: max(5, CGFloat(buckets[i]) / CGFloat(maxVal) * 64))
                                 Text(labels[i])
-                                    .font(BSTheme.text(9))
-                                    .foregroundColor(BSTheme.inkFaint)
+                                    .font(MSTheme.text(9))
+                                    .foregroundColor(MSTheme.inkFaint)
                             }
                             .frame(maxWidth: .infinity)
                         }
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .bsCard()
+                .msCard()
             }
         }
     }
@@ -155,25 +155,25 @@ struct JournalView: View {
     private var heatmapCard: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Five weeks of practice")
-                .font(BSTheme.serif(16))
-                .foregroundColor(BSTheme.ink)
+                .font(MSTheme.serif(16))
+                .foregroundColor(MSTheme.ink)
             HeatmapGrid()
             HStack(spacing: 10) {
                 Text("less")
-                    .font(BSTheme.text(10))
-                    .foregroundColor(BSTheme.inkFaint)
+                    .font(MSTheme.text(10))
+                    .foregroundColor(MSTheme.inkFaint)
                 ForEach(0..<4, id: \.self) { i in
                     RoundedRectangle(cornerRadius: 3)
                         .fill(heatColor(level: i))
                         .frame(width: 14, height: 14)
                 }
                 Text("more")
-                    .font(BSTheme.text(10))
-                    .foregroundColor(BSTheme.inkFaint)
+                    .font(MSTheme.text(10))
+                    .foregroundColor(MSTheme.inkFaint)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .bsCard()
+        .msCard()
     }
 
     private var favouritesCard: some View {
@@ -182,27 +182,27 @@ struct JournalView: View {
             if !top.isEmpty {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Most counted")
-                        .font(BSTheme.serif(16))
-                        .foregroundColor(BSTheme.ink)
+                        .font(MSTheme.serif(16))
+                        .foregroundColor(MSTheme.ink)
                     let maxVal = top.first?.value ?? 1
                     ForEach(Array(top), id: \.key) { key, value in
                         VStack(alignment: .leading, spacing: 3) {
                             HStack {
                                 Text(titleFor(key))
-                                    .font(BSTheme.text(13, .medium))
-                                    .foregroundColor(BSTheme.ink)
+                                    .font(MSTheme.text(13, .medium))
+                                    .foregroundColor(MSTheme.ink)
                                     .lineLimit(1)
                                     .minimumScaleFactor(0.7)
                                 Spacer()
                                 Text("\(value)")
-                                    .font(BSTheme.round(13))
-                                    .foregroundColor(BSTheme.emerald)
+                                    .font(MSTheme.round(13))
+                                    .foregroundColor(MSTheme.emerald)
                             }
                             GeometryReader { geo in
                                 ZStack(alignment: .leading) {
-                                    Capsule().fill(BSTheme.line.opacity(0.4))
+                                    Capsule().fill(MSTheme.line.opacity(0.4))
                                     Capsule()
-                                        .fill(BSTheme.emerald)
+                                        .fill(MSTheme.emerald)
                                         .frame(width: max(6, geo.size.width * CGFloat(value) / CGFloat(maxVal)))
                                 }
                             }
@@ -211,13 +211,13 @@ struct JournalView: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .bsCard()
+                .msCard()
             }
         }
     }
 
     private func titleFor(_ key: String) -> String {
-        if let item = BSCatalog.item(key) { return item.translit }
+        if let item = MSCatalog.item(key) { return item.translit }
         if let phrase = FreePhrase.all.first(where: { $0.id == key }) { return phrase.translit }
         return key
     }
@@ -226,26 +226,26 @@ struct JournalView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("Badges")
-                    .font(BSTheme.serif(16))
-                    .foregroundColor(BSTheme.ink)
+                    .font(MSTheme.serif(16))
+                    .foregroundColor(MSTheme.ink)
                 Spacer()
-                BSChip(text: "\(store.state.earned.count) of \(BSCatalog.badges.count)", tint: BSTheme.gold)
+                MSChip(text: "\(store.state.earned.count) of \(MSCatalog.badges.count)", tint: MSTheme.gold)
             }
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 96), spacing: 8)], spacing: 8) {
-                ForEach(BSCatalog.badges) { badge in
+                ForEach(MSCatalog.badges) { badge in
                     let earned = store.state.earned.contains(badge.id)
                     VStack(spacing: 5) {
                         StarShape(points: 8)
-                            .fill(earned ? BSTheme.gold : BSTheme.line.opacity(0.7))
+                            .fill(earned ? MSTheme.gold : MSTheme.line.opacity(0.7))
                             .frame(width: 26, height: 26)
                         Text(badge.title)
-                            .font(BSTheme.text(10, .semibold))
-                            .foregroundColor(earned ? BSTheme.ink : BSTheme.inkFaint)
+                            .font(MSTheme.text(10, .semibold))
+                            .foregroundColor(earned ? MSTheme.ink : MSTheme.inkFaint)
                             .multilineTextAlignment(.center)
                             .lineLimit(2)
                         Text(badge.detail)
-                            .font(BSTheme.text(8))
-                            .foregroundColor(BSTheme.inkFaint)
+                            .font(MSTheme.text(8))
+                            .foregroundColor(MSTheme.inkFaint)
                             .multilineTextAlignment(.center)
                             .lineLimit(2)
                     }
@@ -253,13 +253,13 @@ struct JournalView: View {
                     .frame(maxWidth: .infinity, minHeight: 92)
                     .background(
                         RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(earned ? BSTheme.goldSoft.opacity(0.35) : BSTheme.paperDeep.opacity(0.5))
+                            .fill(earned ? MSTheme.goldSoft.opacity(0.35) : MSTheme.paperDeep.opacity(0.5))
                     )
                 }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .bsCard()
+        .msCard()
     }
 
     private var sessionsCard: some View {
@@ -267,28 +267,28 @@ struct JournalView: View {
             if !store.state.sessions.isEmpty {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Recent rounds")
-                        .font(BSTheme.serif(16))
-                        .foregroundColor(BSTheme.ink)
+                        .font(MSTheme.serif(16))
+                        .foregroundColor(MSTheme.ink)
                     ForEach(store.state.sessions.prefix(12)) { rec in
                         HStack {
                             VStack(alignment: .leading, spacing: 1) {
                                 Text(rec.title)
-                                    .font(BSTheme.text(13, .medium))
-                                    .foregroundColor(BSTheme.ink)
+                                    .font(MSTheme.text(13, .medium))
+                                    .foregroundColor(MSTheme.ink)
                                     .lineLimit(1)
                                     .minimumScaleFactor(0.7)
                                 Text(Self.timeFormatter.string(from: rec.date))
-                                    .font(BSTheme.text(10))
-                                    .foregroundColor(BSTheme.inkFaint)
+                                    .font(MSTheme.text(10))
+                                    .foregroundColor(MSTheme.inkFaint)
                             }
                             Spacer()
-                            BSChip(text: "\(rec.count)", tint: BSTheme.emerald)
+                            MSChip(text: "\(rec.count)", tint: MSTheme.emerald)
                         }
                         .padding(.vertical, 2)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .bsCard()
+                .msCard()
             }
         }
     }
@@ -303,15 +303,15 @@ struct JournalView: View {
 
 func heatColor(level: Int) -> Color {
     switch level {
-    case 0: return BSTheme.line.opacity(0.35)
-    case 1: return BSTheme.emerald.opacity(0.3)
-    case 2: return BSTheme.emerald.opacity(0.6)
-    default: return BSTheme.emerald
+    case 0: return MSTheme.line.opacity(0.35)
+    case 1: return MSTheme.emerald.opacity(0.3)
+    case 2: return MSTheme.emerald.opacity(0.6)
+    default: return MSTheme.emerald
     }
 }
 
 struct HeatmapGrid: View {
-    @EnvironmentObject var store: BSStore
+    @EnvironmentObject var store: MSStore
 
     var body: some View {
         let days = lastDays(35)
@@ -326,7 +326,7 @@ struct HeatmapGrid: View {
                         Group {
                             if Calendar.current.isDateInToday(day) {
                                 RoundedRectangle(cornerRadius: 4)
-                                    .strokeBorder(BSTheme.gold, lineWidth: 1.5)
+                                    .strokeBorder(MSTheme.gold, lineWidth: 1.5)
                             }
                         }
                     )

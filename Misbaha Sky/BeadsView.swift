@@ -45,7 +45,7 @@ struct FreePhrase: Identifiable, Equatable {
 }
 
 struct BeadsView: View {
-    @EnvironmentObject var store: BSStore
+    @EnvironmentObject var store: MSStore
     @StateObject private var engine = BeadEngine()
     @State private var round: RoundSpec = RoundSpec.fromItem(
         AdhkarData.prayerSet.items[1], setId: nil, queueIds: [], queueIndex: 0
@@ -58,7 +58,7 @@ struct BeadsView: View {
         GeometryReader { geo in
             let wide = geo.size.width > geo.size.height && geo.size.width > 620
             ZStack {
-                BSTheme.paper.ignoresSafeArea()
+                MSTheme.paper.ignoresSafeArea()
                 if wide {
                     HStack(spacing: 0) {
                         infoColumn
@@ -131,17 +131,17 @@ struct BeadsView: View {
                 .frame(width: 74, height: 74)
                 VStack(spacing: 0) {
                     Text("\(engine.committed)")
-                        .font(BSTheme.round(26))
-                        .foregroundColor(BSTheme.ink)
+                        .font(MSTheme.round(26))
+                        .foregroundColor(MSTheme.ink)
                     if round.target > 0 {
                         Text("of \(round.target)")
-                            .font(BSTheme.text(11, .medium))
-                            .foregroundColor(BSTheme.inkFaint)
+                            .font(MSTheme.text(11, .medium))
+                            .foregroundColor(MSTheme.inkFaint)
                     }
                 }
             }
             .padding(10)
-            .background(Circle().fill(BSTheme.card.opacity(0.92)))
+            .background(Circle().fill(MSTheme.card.opacity(0.92)))
         }
     }
 
@@ -152,38 +152,38 @@ struct BeadsView: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     if !round.queueIds.isEmpty {
-                        BSChip(text: "Step \(round.queueIndex + 1) of \(round.queueIds.count)", tint: BSTheme.terra)
+                        MSChip(text: "Step \(round.queueIndex + 1) of \(round.queueIds.count)", tint: MSTheme.terra)
                     } else {
-                        BSChip(text: round.target > 0 ? "\(round.target) beads" : "Open count", tint: BSTheme.emerald)
+                        MSChip(text: round.target > 0 ? "\(round.target) beads" : "Open count", tint: MSTheme.emerald)
                     }
                     Spacer()
                     Text("Change")
-                        .font(BSTheme.text(12, .semibold))
-                        .foregroundColor(BSTheme.gold)
+                        .font(MSTheme.text(12, .semibold))
+                        .foregroundColor(MSTheme.gold)
                 }
                 Text(round.arabic)
-                    .font(BSTheme.arabic(round.arabic.count > 60 ? 20 : 28))
-                    .foregroundColor(BSTheme.ink)
+                    .font(MSTheme.arabic(round.arabic.count > 60 ? 20 : 28))
+                    .foregroundColor(MSTheme.ink)
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .multilineTextAlignment(.trailing)
                     .lineLimit(4)
                     .minimumScaleFactor(0.6)
                 if store.state.showTranslit {
                     Text(round.translit)
-                        .font(BSTheme.text(14, .semibold))
-                        .foregroundColor(BSTheme.emerald)
+                        .font(MSTheme.text(14, .semibold))
+                        .foregroundColor(MSTheme.emerald)
                         .lineLimit(2)
                         .minimumScaleFactor(0.7)
                 }
                 Text(round.english)
-                    .font(BSTheme.text(13))
-                    .foregroundColor(BSTheme.inkSoft)
+                    .font(MSTheme.text(13))
+                    .foregroundColor(MSTheme.inkSoft)
                     .lineLimit(3)
                     .minimumScaleFactor(0.8)
             }
         }
         .buttonStyle(ScalePressStyle())
-        .bsCard()
+        .msCard()
     }
 
     private var counterCluster: some View {
@@ -199,11 +199,11 @@ struct BeadsView: View {
     private func statLine(value: String, label: String) -> some View {
         HStack(spacing: 6) {
             Text(value)
-                .font(BSTheme.round(18))
-                .foregroundColor(BSTheme.emerald)
+                .font(MSTheme.round(18))
+                .foregroundColor(MSTheme.emerald)
             Text(label)
-                .font(BSTheme.text(12))
-                .foregroundColor(BSTheme.inkSoft)
+                .font(MSTheme.text(12))
+                .foregroundColor(MSTheme.inkSoft)
         }
     }
 
@@ -237,33 +237,33 @@ struct BeadsView: View {
 
     private func smallControl(label: String) -> some View {
         Text(label)
-            .font(BSTheme.text(13, .semibold))
-            .foregroundColor(BSTheme.inkSoft)
+            .font(MSTheme.text(13, .semibold))
+            .foregroundColor(MSTheme.inkSoft)
             .padding(.horizontal, 14)
             .padding(.vertical, 8)
-            .background(Capsule().fill(BSTheme.card))
-            .overlay(Capsule().strokeBorder(BSTheme.line, lineWidth: 1))
+            .background(Capsule().fill(MSTheme.card))
+            .overlay(Capsule().strokeBorder(MSTheme.line, lineWidth: 1))
     }
 
     private var completionOverlay: some View {
         ZStack {
-            BSTheme.ink.opacity(0.35).ignoresSafeArea()
+            MSTheme.ink.opacity(0.35).ignoresSafeArea()
             VStack(spacing: 16) {
                 ZStack {
-                    GeometricRosette(tint: BSTheme.gold, petals: 10)
+                    GeometricRosette(tint: MSTheme.gold, petals: 10)
                         .frame(width: 86, height: 86)
                     Text("\(round.target)")
-                        .font(BSTheme.round(28))
-                        .foregroundColor(BSTheme.emerald)
+                        .font(MSTheme.round(28))
+                        .foregroundColor(MSTheme.emerald)
                 }
                 Text(setFinished ? "Set complete" : "Round complete")
-                    .font(BSTheme.serif(24))
-                    .foregroundColor(BSTheme.ink)
+                    .font(MSTheme.serif(24))
+                    .foregroundColor(MSTheme.ink)
                 Text(setFinished
                      ? "Every remembrance in this set has been counted. Well done."
                      : round.translit)
-                    .font(BSTheme.text(14))
-                    .foregroundColor(BSTheme.inkSoft)
+                    .font(MSTheme.text(14))
+                    .foregroundColor(MSTheme.inkSoft)
                     .multilineTextAlignment(.center)
                 VStack(spacing: 10) {
                     if let next = nextInQueue() {
@@ -290,8 +290,8 @@ struct BeadsView: View {
                         showChooser = true
                     } label: {
                         Text("Choose another dhikr")
-                            .font(BSTheme.text(14, .semibold))
-                            .foregroundColor(BSTheme.emerald)
+                            .font(MSTheme.text(14, .semibold))
+                            .foregroundColor(MSTheme.emerald)
                     }
                 }
             }
@@ -299,8 +299,8 @@ struct BeadsView: View {
             .frame(maxWidth: 420)
             .background(
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(BSTheme.paper)
-                    .shadow(color: BSTheme.ink.opacity(0.25), radius: 20, x: 0, y: 8)
+                    .fill(MSTheme.paper)
+                    .shadow(color: MSTheme.ink.opacity(0.25), radius: 20, x: 0, y: 8)
             )
             .padding(.horizontal, 30)
         }
@@ -309,12 +309,12 @@ struct BeadsView: View {
     private func primaryButton(title: String, subtitle: String?) -> some View {
         VStack(spacing: 2) {
             Text(title)
-                .font(BSTheme.text(15, .semibold))
+                .font(MSTheme.text(15, .semibold))
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
             if let s = subtitle {
                 Text(s)
-                    .font(BSTheme.text(11))
+                    .font(MSTheme.text(11))
                     .opacity(0.8)
             }
         }
@@ -322,15 +322,15 @@ struct BeadsView: View {
         .padding(.horizontal, 22)
         .padding(.vertical, 12)
         .frame(maxWidth: .infinity)
-        .background(Capsule().fill(BSTheme.emerald))
+        .background(Capsule().fill(MSTheme.emerald))
     }
 
     private func handleAdvance() {
         let c = engine.committed
         if c > 0 && c % 33 == 0 {
-            BSHaptics.divider()
+            MSHaptics.divider()
         } else {
-            BSHaptics.bead()
+            MSHaptics.bead()
         }
         if round.target > 0 && c >= round.target {
             finishRound()
@@ -345,7 +345,7 @@ struct BeadsView: View {
                 setFinished = true
             }
         }
-        BSHaptics.success()
+        MSHaptics.success()
         withAnimation(.easeOut(duration: 0.3)) {
             completed = true
         }
@@ -353,7 +353,7 @@ struct BeadsView: View {
 
     private func nextInQueue() -> DhikrItem? {
         guard !round.queueIds.isEmpty, round.queueIndex + 1 < round.queueIds.count else { return nil }
-        return BSCatalog.item(round.queueIds[round.queueIndex + 1])
+        return MSCatalog.item(round.queueIds[round.queueIndex + 1])
     }
 
     private func advanceQueue() {
@@ -382,7 +382,7 @@ struct BeadsView: View {
         if engine.committed > 0 {
             engine.committed -= 1
             engine.fraction = 0
-            BSHaptics.tap()
+            MSHaptics.tap()
         }
     }
 
@@ -394,7 +394,7 @@ struct BeadsView: View {
 }
 
 struct DhikrChooserSheet: View {
-    @EnvironmentObject var store: BSStore
+    @EnvironmentObject var store: MSStore
     @Environment(\.presentationMode) var presentation
     let onPick: (RoundSpec) -> Void
     @State private var freeTarget: Int = 33
@@ -403,20 +403,20 @@ struct DhikrChooserSheet: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
-                    BSSectionHeader(title: "Free counting", subtitle: "Pick a phrase and a target")
+                    MSSectionHeader(title: "Free counting", subtitle: "Pick a phrase and a target")
                     HStack(spacing: 8) {
                         ForEach([33, 99, 100, 300, 0], id: \.self) { t in
                             Button {
                                 freeTarget = t
-                                BSHaptics.tap()
+                                MSHaptics.tap()
                             } label: {
                                 Text(t == 0 ? "Open" : "\(t)")
-                                    .font(BSTheme.text(13, .semibold))
-                                    .foregroundColor(freeTarget == t ? .white : BSTheme.emerald)
+                                    .font(MSTheme.text(13, .semibold))
+                                    .foregroundColor(freeTarget == t ? .white : MSTheme.emerald)
                                     .padding(.horizontal, 13)
                                     .padding(.vertical, 7)
                                     .background(
-                                        Capsule().fill(freeTarget == t ? BSTheme.emerald : BSTheme.emerald.opacity(0.1))
+                                        Capsule().fill(freeTarget == t ? MSTheme.emerald : MSTheme.emerald.opacity(0.1))
                                     )
                             }
                             .buttonStyle(ScalePressStyle())
@@ -441,39 +441,39 @@ struct DhikrChooserSheet: View {
                                 HStack {
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(phrase.translit)
-                                            .font(BSTheme.text(14, .semibold))
-                                            .foregroundColor(BSTheme.ink)
+                                            .font(MSTheme.text(14, .semibold))
+                                            .foregroundColor(MSTheme.ink)
                                         Text(phrase.english)
-                                            .font(BSTheme.text(12))
-                                            .foregroundColor(BSTheme.inkSoft)
+                                            .font(MSTheme.text(12))
+                                            .foregroundColor(MSTheme.inkSoft)
                                             .lineLimit(1)
                                     }
                                     Spacer()
                                     Text(phrase.arabic)
-                                        .font(BSTheme.arabic(17))
-                                        .foregroundColor(BSTheme.emerald)
+                                        .font(MSTheme.arabic(17))
+                                        .foregroundColor(MSTheme.emerald)
                                         .lineLimit(1)
                                         .minimumScaleFactor(0.5)
                                 }
                                 .padding(12)
                                 .background(
                                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                        .fill(BSTheme.card)
+                                        .fill(MSTheme.card)
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                                .strokeBorder(BSTheme.line, lineWidth: 1)
+                                                .strokeBorder(MSTheme.line, lineWidth: 1)
                                         )
                                 )
                             }
                             .buttonStyle(ScalePressStyle())
                         }
                     }
-                    BSSectionHeader(title: "From the sets", subtitle: "Any single remembrance")
-                    ForEach(BSCatalog.sets) { set in
+                    MSSectionHeader(title: "From the sets", subtitle: "Any single remembrance")
+                    ForEach(MSCatalog.sets) { set in
                         VStack(alignment: .leading, spacing: 8) {
                             Text(set.title)
-                                .font(BSTheme.serif(16))
-                                .foregroundColor(BSTheme.ink)
+                                .font(MSTheme.serif(16))
+                                .foregroundColor(MSTheme.ink)
                             VStack(spacing: 6) {
                                 ForEach(set.items) { item in
                                     Button {
@@ -482,18 +482,18 @@ struct DhikrChooserSheet: View {
                                     } label: {
                                         HStack {
                                             Text(item.translit)
-                                                .font(BSTheme.text(13, .medium))
-                                                .foregroundColor(BSTheme.ink)
+                                                .font(MSTheme.text(13, .medium))
+                                                .foregroundColor(MSTheme.ink)
                                                 .lineLimit(1)
                                                 .minimumScaleFactor(0.7)
                                             Spacer()
-                                            BSChip(text: "\(item.count)", tint: BSTheme.gold)
+                                            MSChip(text: "\(item.count)", tint: MSTheme.gold)
                                         }
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 9)
                                         .background(
                                             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                                .fill(BSTheme.card)
+                                                .fill(MSTheme.card)
                                         )
                                     }
                                     .buttonStyle(ScalePressStyle())
@@ -504,21 +504,21 @@ struct DhikrChooserSheet: View {
                 }
                 .padding(16)
             }
-            .background(BSTheme.paper.ignoresSafeArea())
+            .background(MSTheme.paper.ignoresSafeArea())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Choose a dhikr")
-                        .font(BSTheme.serif(17))
-                        .foregroundColor(BSTheme.ink)
+                        .font(MSTheme.serif(17))
+                        .foregroundColor(MSTheme.ink)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         presentation.wrappedValue.dismiss()
                     } label: {
                         Text("Close")
-                            .font(BSTheme.text(14, .semibold))
-                            .foregroundColor(BSTheme.emerald)
+                            .font(MSTheme.text(14, .semibold))
+                            .foregroundColor(MSTheme.emerald)
                     }
                 }
             }

@@ -91,7 +91,7 @@ struct MisbahaStrand: View {
                            sessionTarget == 0 || engine.committed < sessionTarget {
                             advance()
                         } else if engine.fraction > 0 {
-                            BSHaptics.settle()
+                            MSHaptics.settle()
                             onSettleBack()
                         }
                         engine.fraction = 0
@@ -136,17 +136,17 @@ struct MisbahaStrand: View {
         let dawn = hour >= 5.0 && hour < 7.5
         let dusk = hour >= 17.0 && hour < 20.5
         if night {
-            top = Color(bsHex: 0x232B3F).opacity(0.32)
-            bottom = Color(bsHex: 0x3A3A52).opacity(0.14)
+            top = Color(msHex: 0x232B3F).opacity(0.32)
+            bottom = Color(msHex: 0x3A3A52).opacity(0.14)
         } else if dawn {
-            top = Color(bsHex: 0xC9D3E0).opacity(0.30)
-            bottom = Color(bsHex: 0xEFC98A).opacity(0.26)
+            top = Color(msHex: 0xC9D3E0).opacity(0.30)
+            bottom = Color(msHex: 0xEFC98A).opacity(0.26)
         } else if dusk {
-            top = Color(bsHex: 0x8A7A9E).opacity(0.24)
-            bottom = Color(bsHex: 0xE0A264).opacity(0.26)
+            top = Color(msHex: 0x8A7A9E).opacity(0.24)
+            bottom = Color(msHex: 0xE0A264).opacity(0.26)
         } else {
-            top = Color(bsHex: 0xBFD2D8).opacity(0.22)
-            bottom = Color(bsHex: 0xF2E4BC).opacity(0.18)
+            top = Color(msHex: 0xBFD2D8).opacity(0.22)
+            bottom = Color(msHex: 0xF2E4BC).opacity(0.18)
         }
         let rect = CGRect(origin: .zero, size: size)
         ctx.fill(
@@ -168,7 +168,7 @@ struct MisbahaStrand: View {
                 let s: CGFloat = 1.1 + CGFloat(seed2) * 1.4
                 ctx.fill(
                     Path(ellipseIn: CGRect(x: x, y: y, width: s, height: s)),
-                    with: .color(BSTheme.goldSoft.opacity(tw))
+                    with: .color(MSTheme.goldSoft.opacity(tw))
                 )
             }
             let mc = CGPoint(x: size.width * 0.78, y: size.height * 0.14)
@@ -179,7 +179,7 @@ struct MisbahaStrand: View {
                 to: CGPoint(x: mc.x + cos(-50 * .pi / 180) * mr, y: mc.y + sin(-50 * .pi / 180) * mr),
                 control: CGPoint(x: mc.x + 7, y: mc.y + 4)
             )
-            ctx.fill(moon, with: .color(BSTheme.goldSoft.opacity(0.55)))
+            ctx.fill(moon, with: .color(MSTheme.goldSoft.opacity(0.55)))
         } else {
             let t = (hour - 6.0) / 14.0
             let a = CGFloat(.pi * (1.0 - min(1, max(0, t))))
@@ -189,11 +189,11 @@ struct MisbahaStrand: View {
             )
             ctx.fill(
                 Path(ellipseIn: CGRect(x: sc.x - 15, y: sc.y - 15, width: 30, height: 30)),
-                with: .color(BSTheme.goldSoft.opacity(dawn || dusk ? 0.5 : 0.34))
+                with: .color(MSTheme.goldSoft.opacity(dawn || dusk ? 0.5 : 0.34))
             )
             ctx.stroke(
                 Path(ellipseIn: CGRect(x: sc.x - 21, y: sc.y - 21, width: 42, height: 42)),
-                with: .color(BSTheme.gold.opacity(0.18)),
+                with: .color(MSTheme.gold.opacity(0.18)),
                 lineWidth: 1.4
             )
         }
@@ -227,7 +227,7 @@ struct MisbahaStrand: View {
         sil.addLine(to: CGPoint(x: size.width, y: baseY))
         sil.addLine(to: CGPoint(x: size.width, y: size.height))
         sil.closeSubpath()
-        ctx.fill(sil, with: .color((night ? BSTheme.night : BSTheme.emeraldDeep).opacity(night ? 0.20 : 0.10)))
+        ctx.fill(sil, with: .color((night ? MSTheme.night : MSTheme.emeraldDeep).opacity(night ? 0.20 : 0.10)))
     }
 
     private func drawStrand(ctx: GraphicsContext, size: CGSize, time: TimeInterval) {
@@ -258,9 +258,9 @@ struct MisbahaStrand: View {
         ctx.stroke(stringPath, with: .color(style.stringColor.opacity(0.85)), lineWidth: 2.4)
 
         let notch = Path(ellipseIn: CGRect(x: cx - size.width * 0.42, y: anchorY - 1.2, width: size.width * 0.1, height: 2.4))
-        ctx.fill(notch, with: .color(BSTheme.gold.opacity(0.5)))
+        ctx.fill(notch, with: .color(MSTheme.gold.opacity(0.5)))
         let notch2 = Path(ellipseIn: CGRect(x: cx + size.width * 0.32, y: anchorY - 1.2, width: size.width * 0.1, height: 2.4))
-        ctx.fill(notch2, with: .color(BSTheme.gold.opacity(0.5)))
+        ctx.fill(notch2, with: .color(MSTheme.gold.opacity(0.5)))
 
         for slot in lowSlot...highSlot {
             let y = anchorY + (CGFloat(engine.displayed - Double(slot))) * spacing
@@ -298,7 +298,7 @@ struct MisbahaStrand: View {
         let dim = counted ? 0.82 : 1.0
 
         let shadow = Path(ellipseIn: rect.offsetBy(dx: 0, dy: r * 0.12).insetBy(dx: -r * 0.04, dy: -r * 0.04))
-        ctx.fill(shadow, with: .color(BSTheme.ink.opacity(0.10)))
+        ctx.fill(shadow, with: .color(MSTheme.ink.opacity(0.10)))
 
         let grad = Gradient(stops: [
             .init(color: style.glint.opacity(dim), location: 0.0),
@@ -325,7 +325,7 @@ struct MisbahaStrand: View {
 
         if nearAnchor && !counted {
             let ring = Path(ellipseIn: rect.insetBy(dx: -3.5, dy: -3.5))
-            ctx.stroke(ring, with: .color(BSTheme.gold.opacity(0.55)), lineWidth: 1.4)
+            ctx.stroke(ring, with: .color(MSTheme.gold.opacity(0.55)), lineWidth: 1.4)
         }
     }
 
@@ -336,12 +336,12 @@ struct MisbahaStrand: View {
         let dim = counted ? 0.82 : 1.0
 
         let shadow = Path(roundedRect: rect.offsetBy(dx: 0, dy: 3), cornerRadius: h / 2)
-        ctx.fill(shadow, with: .color(BSTheme.ink.opacity(0.10)))
+        ctx.fill(shadow, with: .color(MSTheme.ink.opacity(0.10)))
 
         let grad = Gradient(stops: [
-            .init(color: BSTheme.goldSoft.opacity(dim), location: 0.0),
-            .init(color: BSTheme.gold.opacity(dim), location: 0.55),
-            .init(color: Color(bsHex: 0x7A5A1D).opacity(dim), location: 1.0)
+            .init(color: MSTheme.goldSoft.opacity(dim), location: 0.0),
+            .init(color: MSTheme.gold.opacity(dim), location: 0.55),
+            .init(color: Color(msHex: 0x7A5A1D).opacity(dim), location: 1.0)
         ])
         ctx.fill(
             Path(roundedRect: rect, cornerRadius: h / 2),

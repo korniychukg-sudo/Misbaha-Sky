@@ -10,7 +10,7 @@ struct SessionRecord: Codable, Identifiable, Hashable {
     var setId: String? = nil
 }
 
-struct BSState: Codable {
+struct MSState: Codable {
     var totalBeads: Int = 0
     var daily: [String: Int] = [:]
     var perItem: [String: Int] = [:]
@@ -66,13 +66,13 @@ struct BSState: Codable {
     }
 }
 
-final class BSStore: ObservableObject {
-    @Published private(set) var state: BSState
-    @Published var newBadge: BSBadge? = nil
+final class MSStore: ObservableObject {
+    @Published private(set) var state: MSState
+    @Published var newBadge: MSBadge? = nil
     @Published var pendingLaunch: RoundSpec? = nil
     @Published var activeTab: Int = 0
 
-    private static let key = "beadsteps.state.v1"
+    private static let key = "misbahasky.state.v1"
 
     static let dayFormatter: DateFormatter = {
         let f = DateFormatter()
@@ -83,12 +83,12 @@ final class BSStore: ObservableObject {
 
     init() {
         if let data = UserDefaults.standard.data(forKey: Self.key),
-           let decoded = try? JSONDecoder().decode(BSState.self, from: data) {
+           let decoded = try? JSONDecoder().decode(MSState.self, from: data) {
             state = decoded
         } else {
-            state = BSState()
+            state = MSState()
         }
-        BSHaptics.enabled = state.hapticsOn
+        MSHaptics.enabled = state.hapticsOn
         evaluateUnlocks(announce: false)
     }
 
@@ -130,8 +130,8 @@ final class BSStore: ObservableObject {
         let cal = Calendar.current
         let ord = cal.ordinality(of: .day, in: .year, for: Date()) ?? 1
         let year = cal.component(.year, from: Date())
-        let idx = (ord + year * 17) % BSCatalog.names.count
-        return BSCatalog.names[idx]
+        let idx = (ord + year * 17) % MSCatalog.names.count
+        return MSCatalog.names[idx]
     }
 
     func suggestedSet() -> AdhkarSet {
@@ -145,7 +145,7 @@ final class BSStore: ObservableObject {
         case 20..<24: id = "sleep"
         default: id = "sleep"
         }
-        return BSCatalog.set(id) ?? BSCatalog.sets[0]
+        return MSCatalog.set(id) ?? MSCatalog.sets[0]
     }
 
     func logRound(itemId: String, title: String, count: Int, setId: String?) {
@@ -258,7 +258,7 @@ final class BSStore: ObservableObject {
             if styleEarned(style) {
                 state.unlockedStyles.insert(style.rawValue)
                 if announce {
-                    newBadge = BSBadge(
+                    newBadge = MSBadge(
                         id: "unlock-" + style.rawValue,
                         title: "\(style.title) strand unlocked",
                         detail: unlockHint(style)
@@ -270,7 +270,7 @@ final class BSStore: ObservableObject {
 
     func setHaptics(_ on: Bool) {
         state.hapticsOn = on
-        BSHaptics.enabled = on
+        MSHaptics.enabled = on
         save()
     }
 
@@ -286,19 +286,19 @@ final class BSStore: ObservableObject {
     }
 
     func resetAll() {
-        state = BSState()
+        state = MSState()
         state.onboarded = true
         save()
     }
 
-    var earnedBadges: [BSBadge] {
-        BSCatalog.badges.filter { state.earned.contains($0.id) }
+    var earnedBadges: [MSBadge] {
+        MSCatalog.badges.filter { state.earned.contains($0.id) }
     }
 
     private func award(_ id: String) {
         guard !state.earned.contains(id) else { return }
         state.earned.insert(id)
-        if let badge = BSCatalog.badges.first(where: { $0.id == id }) {
+        if let badge = MSCatalog.badges.first(where: { $0.id == id }) {
             newBadge = badge
         }
     }
@@ -312,13 +312,13 @@ final class BSStore: ObservableObject {
         if state.totalBeads >= 10000 { award("b-tenthousand") }
         if streak >= 7 { award("b-week") }
         if streak >= 30 { award("b-month") }
-        if BSCatalog.sets.allSatisfy({ (state.setCompletions[$0.id] ?? 0) > 0 }) { award("b-allsets") }
+        if MSCatalog.sets.allSatisfy({ (state.setCompletions[$0.id] ?? 0) > 0 }) { award("b-allsets") }
         if let m = state.setDayLog["morning"], let e = state.setDayLog["evening"],
            !Set(m).intersection(Set(e)).isEmpty { award("b-morningevening") }
         if (state.prayerByDay[day] ?? 0) >= 5 { award("b-prayerweek") }
         if state.namesRead.count >= 25 { award("b-names25") }
         if state.namesRead.count >= 99 { award("b-names99") }
-        if BSCatalog.guides.allSatisfy({ state.guidesRead.contains($0.id) }) { award("b-guides") }
+        if MSCatalog.guides.allSatisfy({ state.guidesRead.contains($0.id) }) { award("b-guides") }
         if (state.setCompletions["sleep"] ?? 0) > 0 { award("b-night") }
         if (state.setCompletions["road"] ?? 0) > 0 { award("b-traveler") }
         if state.stylesTried.count >= BeadStyle.allCases.count { award("b-styles") }

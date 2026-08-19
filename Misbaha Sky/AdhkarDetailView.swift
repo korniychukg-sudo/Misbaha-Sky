@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AdhkarDetailView: View {
-    @EnvironmentObject var store: BSStore
+    @EnvironmentObject var store: MSStore
     let set: AdhkarSet
 
     var body: some View {
@@ -9,16 +9,16 @@ struct AdhkarDetailView: View {
             VStack(alignment: .leading, spacing: 16) {
                 ArtPlate(name: set.artName, height: 190)
                 HStack {
-                    BSChip(text: set.timeHint, tint: BSTheme.emerald)
-                    BSChip(text: "\(set.totalBeads) beads in all", tint: BSTheme.gold)
+                    MSChip(text: set.timeHint, tint: MSTheme.emerald)
+                    MSChip(text: "\(set.totalBeads) beads in all", tint: MSTheme.gold)
                     Spacer()
                     if let done = store.state.setCompletions[set.id], done > 0 {
-                        BSChip(text: "Completed \(done)x", tint: BSTheme.terra)
+                        MSChip(text: "Completed \(done)x", tint: MSTheme.terra)
                     }
                 }
                 Text(set.intro)
-                    .font(BSTheme.text(14))
-                    .foregroundColor(BSTheme.inkSoft)
+                    .font(MSTheme.text(14))
+                    .foregroundColor(MSTheme.inkSoft)
                     .lineSpacing(4)
                 Button {
                     startWholeSet()
@@ -27,19 +27,19 @@ struct AdhkarDetailView: View {
                         Spacer()
                         VStack(spacing: 2) {
                             Text("Begin with the beads")
-                                .font(BSTheme.text(15, .semibold))
+                                .font(MSTheme.text(15, .semibold))
                                 .foregroundColor(.white)
                             Text("All \(set.items.count) remembrances in order")
-                                .font(BSTheme.text(11))
+                                .font(MSTheme.text(11))
                                 .foregroundColor(.white.opacity(0.8))
                         }
                         Spacer()
                     }
                     .padding(.vertical, 12)
-                    .background(Capsule().fill(BSTheme.emerald))
+                    .background(Capsule().fill(MSTheme.emerald))
                 }
                 .buttonStyle(ScalePressStyle())
-                BSSectionHeader(title: "The remembrances")
+                MSSectionHeader(title: "The remembrances")
                 VStack(spacing: 12) {
                     ForEach(Array(set.items.enumerated()), id: \.element.id) { idx, item in
                         itemCard(item, index: idx + 1)
@@ -49,13 +49,13 @@ struct AdhkarDetailView: View {
             .padding(16)
             .padding(.bottom, 12)
         }
-        .background(BSTheme.paper.ignoresSafeArea())
+        .background(MSTheme.paper.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text(set.title)
-                    .font(BSTheme.serif(18))
-                    .foregroundColor(BSTheme.ink)
+                    .font(MSTheme.serif(18))
+                    .foregroundColor(MSTheme.ink)
             }
         }
     }
@@ -64,57 +64,57 @@ struct AdhkarDetailView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("\(index)")
-                    .font(BSTheme.round(13))
-                    .foregroundColor(BSTheme.gold)
+                    .font(MSTheme.round(13))
+                    .foregroundColor(MSTheme.gold)
                     .frame(width: 24, height: 24)
-                    .background(Circle().fill(BSTheme.goldSoft.opacity(0.5)))
+                    .background(Circle().fill(MSTheme.goldSoft.opacity(0.5)))
                 Spacer()
-                BSChip(text: item.count == 1 ? "once" : "\(item.count) times", tint: BSTheme.emerald)
+                MSChip(text: item.count == 1 ? "once" : "\(item.count) times", tint: MSTheme.emerald)
             }
             Text(item.arabic)
-                .font(BSTheme.arabic(item.arabic.count > 80 ? 19 : 24))
-                .foregroundColor(BSTheme.ink)
+                .font(MSTheme.arabic(item.arabic.count > 80 ? 19 : 24))
+                .foregroundColor(MSTheme.ink)
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 .multilineTextAlignment(.trailing)
                 .lineSpacing(6)
             if store.state.showTranslit {
                 Text(item.translit)
-                    .font(BSTheme.text(13, .semibold))
-                    .foregroundColor(BSTheme.emerald)
+                    .font(MSTheme.text(13, .semibold))
+                    .foregroundColor(MSTheme.emerald)
                     .lineSpacing(2)
             }
             Text(item.english)
-                .font(BSTheme.text(13))
-                .foregroundColor(BSTheme.inkSoft)
+                .font(MSTheme.text(13))
+                .foregroundColor(MSTheme.inkSoft)
                 .lineSpacing(3)
             HStack {
                 Text(item.note)
-                    .font(BSTheme.text(11))
-                    .foregroundColor(BSTheme.inkFaint)
+                    .font(MSTheme.text(11))
+                    .foregroundColor(MSTheme.inkFaint)
                     .italic()
                 Spacer()
-                BSChip(text: item.source, tint: BSTheme.terra)
+                MSChip(text: item.source, tint: MSTheme.terra)
             }
             Button {
                 startSingle(item)
             } label: {
                 HStack {
                     Spacer()
-                    BeadsIcon(size: 16, color: BSTheme.emerald)
+                    BeadsIcon(size: 16, color: MSTheme.emerald)
                     Text("Count this one")
-                        .font(BSTheme.text(13, .semibold))
-                        .foregroundColor(BSTheme.emerald)
+                        .font(MSTheme.text(13, .semibold))
+                        .foregroundColor(MSTheme.emerald)
                     Spacer()
                 }
                 .padding(.vertical, 8)
                 .background(
-                    Capsule().fill(BSTheme.emerald.opacity(0.08))
-                        .overlay(Capsule().strokeBorder(BSTheme.emerald.opacity(0.35), lineWidth: 1))
+                    Capsule().fill(MSTheme.emerald.opacity(0.08))
+                        .overlay(Capsule().strokeBorder(MSTheme.emerald.opacity(0.35), lineWidth: 1))
                 )
             }
             .buttonStyle(ScalePressStyle())
         }
-        .bsCard()
+        .msCard()
     }
 
     private func startWholeSet() {
@@ -123,12 +123,12 @@ struct AdhkarDetailView: View {
             first, setId: set.id, queueIds: set.items.map { $0.id }, queueIndex: 0
         )
         store.activeTab = 0
-        BSHaptics.tap()
+        MSHaptics.tap()
     }
 
     private func startSingle(_ item: DhikrItem) {
         store.pendingLaunch = RoundSpec.fromItem(item, setId: nil, queueIds: [], queueIndex: 0)
         store.activeTab = 0
-        BSHaptics.tap()
+        MSHaptics.tap()
     }
 }

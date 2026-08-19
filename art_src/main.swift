@@ -1,7 +1,7 @@
 import Foundation
 import CoreGraphics
 
-let outDir = CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "../Bead Steps/Art"
+let outDir = CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "../Misbaha Sky/Art"
 let S = Scenes(dir: outDir)
 
 func tassel(_ p: Plate, at pt: CGPoint, len: CGFloat, col: Col) {
